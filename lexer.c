@@ -1,38 +1,5 @@
 #include "minishell.h"
 
-// echo "hello"world | wc -l <<a | cat '-e'
-/*
-(echo) ("hello"world) (|) (wc) (-l) (<<) (a) (|) (cat) ('-e')
-*/
-void	dq_helper(char *str, int *i)
-{
-    (*i)++;
-    while (str[(*i)] != '"' && str[(*i)])
-        (*i)++;
-    if (str[(*i)] == '"')
-        (*i)++;
-    if (str[(*i)] != ' ' && str[(*i)])
-    {
-        while (str[(*i)] != ' ' && str[(*i)])
-        (*i)++;
-    }
-}
-
-void	sq_helper(char *str, int *i)
-{
-    (*i)++;
-    while (str[(*i)] != '\'' && str[(*i)])
-        (*i)++;
-    if (str[(*i)] == '\'')
-        (*i)++;
-    if (str[(*i)] != ' ' && str[(*i)])
-    {
-        while (str[(*i)] != ' ' && str[(*i)])
-        (*i)++;
-    }
-}
-
-
 void	lexer_wc_inner(char *str, int *i, int *f)
 {
 	if (str[(*i)] == '"')
@@ -190,14 +157,3 @@ char	**the_lexer(char *str)
 	return (lexer);
 }
 
-int main(int ac, char **av)
-{
-	int		i = 0;
-	char	*str = readline("minishell$ ");
-	printf("kelime sayisi -> %d\n", lexer_wc(str));
-	char **lexer = the_lexer(str);
-	printf("tokens:\n");
-	while (lexer[i])
-		printf("%s\n", lexer[i++]); 
-	return (0);
-}
