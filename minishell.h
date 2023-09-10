@@ -9,9 +9,11 @@ typedef	struct s_lexer
 
 typedef struct s_parser
 {
-	char	**cmds;
-	int		stdin;
-	int		stdout;
+	char			**cmds;
+	int				fd_in;
+	int				fd_out;
+	int				is_builtin;
+	struct s_parser *next;
 }	t_parser;
 
 typedef	struct s_env
@@ -32,8 +34,10 @@ typedef	struct s_env
 # include <readline/history.h>
 # include <signal.h>
 
-int		split_len(char **split);
-char	**the_lexer(char *str);
-int		equal_len(char *str);
+int			split_len(char **split);
+char		**the_lexer(char *str);
+int			equal_len(char *str);
+t_parser	*set_parser(t_lexer *lexer);
+char		*cleaner(char *str);
 
 #endif

@@ -68,7 +68,7 @@ void	count_quotes(char *str, int i, int j, int k)
 {
 	while (str[i])
 	{
-		if (str[i] == '\'' && str[i++]) // str[i] kısmına ulaşırsa bir ilerlesin diye
+		if (str[i] == '\'' && str[i++])
 		{
 			j++;
 			while (str[i] != '\'' && str[i++]);
@@ -128,7 +128,7 @@ char	**the_lexer(char *str)
 				while (f == 1)
 				{
 					i++;
-					if (str[i] == '\'')
+					if (str[i] == '\'') // | "123 asd"
 						f--;
 				}
 				if (is_special(str + i)) // a><a gibi bir case sorun çıkarıyordu // altta if (... && !is_special )
@@ -146,6 +146,7 @@ char	**the_lexer(char *str)
 					k = i;
 					if (is_special(str + i))
 						i--;
+					if ((str[i] == '\'' || str[i] == '"') && i--);
 				}
 				i++;
 			}

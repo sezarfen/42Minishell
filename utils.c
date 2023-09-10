@@ -30,8 +30,6 @@ int	find_env(char *str)
 	if (ft_strncmp(str, "USER"))
 }
 
-
-
 char	*correct_words(char	*str)
 {
 	char	*new;
