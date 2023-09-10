@@ -44,7 +44,7 @@ int main(int ac, char **av, char **the_env)
 	int	i = 0;
 	while (lexer->tokens[i])
 	{
-		lexer->tokens[i] = cleaner(lexer->tokens[i]);
+		lexer->tokens[i] = cleaner(lexer->tokens[i], env);
 		i++;
 	}
 	i = 0;

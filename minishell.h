@@ -38,6 +38,7 @@ int			split_len(char **split);
 char		**the_lexer(char *str);
 int			equal_len(char *str);
 t_parser	*set_parser(t_lexer *lexer);
-char		*cleaner(char *str);
+char		*cleaner(char *str, t_env *env);
+
 
 #endif

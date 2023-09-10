@@ -25,22 +25,26 @@ void	nest_one(char **clean, char *str, int *i, int *k)
 }
 */
 
-char	*find_in_env(char *str, int *i)
+char	*find_in_env(char *str, int *i, t_env *env)
 {
 	int	n;
+	int	j;
 	
 	n = 0;
 	while (str[n] != ' ' && str[n] != '"' && str[n] != '\'')
 		n++;
 	*i += n;
-	if (!ft_strncmp(str + 1, "USER", n - 1))
-		return (ft_strdup("fdundar"));
-	if (!ft_strncmp(str + 1, "PATH", n - 1))
-		return (ft_strdup("/mnt/c/Users/TR/Desktop/minishell"));
+	j = 0;
+	while (env->key[j])
+	{
+		if (!ft_strncmp(str + 1, env->key[j], n - 1))
+			return (ft_strdup(env->value[j]));
+		j++;
+	}
 	return (ft_strdup(""));
 }
 
-char	*cleaner(char *str)
+char	*cleaner(char *str, t_env *env)
 {
 	char	*clean;
 	int		len;
@@ -62,7 +66,7 @@ char	*cleaner(char *str)
 				if (str[i] == '$')
 				{
 					clean = ft_strjoin(clean, ft_substr(str, k, i - k));
-					clean = ft_strjoin(clean, find_in_env(str + i, &i));
+					clean = ft_strjoin(clean, find_in_env(str + i, &i, env));
 					k = i + (str[i] == '"'); // hi norminette
 				}
 				i++;
@@ -86,7 +90,7 @@ char	*cleaner(char *str)
 		else if (str[i] == '$')
 		{
 			clean = ft_strjoin(clean, ft_substr(str, k, i - k));
-			clean = ft_strjoin(clean, find_in_env(str + i, &i));
+			clean = ft_strjoin(clean, find_in_env(str + i, &i, env));
 			k = i + (str[i] == '"'); // hi norminette
 		}
 		i++;
