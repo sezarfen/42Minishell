@@ -1,0 +1,26 @@
+$$		commands that will be handled		$$
+
+echo	-n
+cd
+pwd
+export
+unset
+env
+exit
+
+$$		other stuffs	$$
+
+$$$$$$$$$$$$$$$$$
+|  -> 
+<  -> stdin from file
+>  -> write on file 
+<< -> heredoc
+>> -> append işlemi yapıyor
+$$$$$$$$$$$$$$$$$
+
+/*
+
+exec commandları o anki process ' i bitiriyor
+o yüzden child process'e geçmemiz lazım
+
+*/
