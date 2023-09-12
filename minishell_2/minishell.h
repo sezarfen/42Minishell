@@ -39,7 +39,15 @@ char		**the_lexer(char *str);
 int			equal_len(char *str);
 t_parser	*set_parser(t_lexer *lexer);
 char		*cleaner(char *str, t_env *env);
-int			is_special(char *str);
 void		lexer_control(t_lexer *lexer);
+int			is_special(char *str);
+int			is_pipe(char *str);
+int			is_output_redirect(char *str);
+int			is_input_redirect(char *str);
+int			is_builtin(char *str);
+void		cd(int argc, char *args);
+void		pwd(void);
+void	 	print_env(t_env *env);
+t_env		*export(char *str, t_env *exp);
 
 #endif

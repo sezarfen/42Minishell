@@ -20,6 +20,18 @@ int		equal_len(char *str)
 	return (i); 
 }
 
+void	print_env(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (env->key[i])
+	{
+		printf("%s=%s\n", env->key[i], env->value[i]);
+		i++;
+	}
+}
+
 // "Sa$USER" -> Safdundar
 // 'Sa$USER' -> Safdundar
 // Sa$USER   -> Safdundar

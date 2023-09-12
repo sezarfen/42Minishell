@@ -11,11 +11,11 @@ exit
 $$		other stuffs	$$
 
 $$$$$$$$$$$$$$$$$
-|  -> 
-<  -> stdin from file
->  -> write on file 
-<< -> heredoc
->> -> append işlemi yapıyor
+|  					-> pipe
+<  					-> stdin from file
+>  					-> write on file 
+<< 					-> heredoc
+>> 					-> append işlemi yapıyor
 $$$$$$$$$$$$$$$$$
 
 /*

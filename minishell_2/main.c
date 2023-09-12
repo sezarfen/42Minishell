@@ -1,6 +1,39 @@
 #include "minishell.h"
 
+void	output_redirect(t_parser *parser, int i)
+{
+	parser->fd_out = open(parser->cmds[i + 1], O_CREAT | O_RDWR);
+	if (parser->fd_out == -1)
+		printf("cannot open that file...");
+}
 
+void	input_redirect(t_parser *parser, int i)
+{
+	parser->fd_in = open(parser->cmds[i - 1], O_CREAT | O_RDWR);
+	if (parser->fd_out == -1)
+		printf("cannot open that file...");
+}
+
+void	fill_parser(t_parser *parser)
+{
+	int	i;
+
+	i = 0;
+	while (parser)
+	{
+		parser->is_builtin = is_builtin(parser->cmds[0]);
+		while (parser->cmds[i])
+		{
+			if (is_output_redirect(parser->cmds[i]))
+				output_redirect(parser, i);
+			else if (is_input_redirect(parser->cmds[i]))
+				input_redirect(parser, i);
+			i++;
+		}
+		i = 0;
+		parser = parser->next;
+	}
+}
 
 t_lexer	*init_lexer(void)
 {
@@ -39,41 +72,44 @@ int main(int ac, char **av, char **the_env)
 {
 	t_lexer		*lexer;
 	t_parser	*parser;
-	t_env		*env;
-	//t_list		*parser;
-	//parser_node = ft_calloc(1, sizeof(t_parser));
-	//ft_lstadd_back(&parser, ft_lstnew(parser_node));
+	t_env		*env_list;
+	t_env		*exp_list;
 
+	//lexer_control(lexer);
+	env_list = set_env(the_env);
+	exp_list = set_env(the_env);
 	while (1)
 	{
-		env = set_env(the_env);
 		lexer = init_lexer();
-		//lexer_control(lexer);
-		int	i = 0;
-		printf("===============TOKENS===============\n");
-		while (lexer->tokens[i])
-			printf("(%s) ", lexer->tokens[i++]);
-		printf("\n===============PARSER===============\n");
 		parser = set_parser(lexer);
-		i = 0;
-		while (parser)
-		{
-			while (parser->cmds[i])
-				printf("%s ", parser->cmds[i++]);
-			i = 0;
-			parser = parser->next;
-			if (parser)
-				printf("\n---pipe---\n");
-		}
-		printf("\n");
+		fill_parser(parser);
+		if (!ft_strncmp(lexer->tokens[0], "export", ft_strlen(lexer->tokens[0])))
+			env_list = export(lexer->tokens[1], env_list);
+		if (!ft_strncmp(lexer->tokens[0], "env", ft_strlen(lexer->tokens[0])))
+			print_env(env_list);
 	}
 	return (0);
 }
 
+
 /*
+		LEXER İÇERİKLERİNİ CLEANER ' A SOKMA [DAHA SONRA YAPILMASI DAHA DOĞRU OLABİLİR]
 		while (lexer->tokens[i])
 		{
 			lexer->tokens[i] = cleaner(lexer->tokens[i], env);
 			i++;
+		}
+
+		// PARSER İÇERİKLERİNİ EKRANA YAZDIRMA
+		i = 0;
+		t_parser *temp = parser;
+		while (temp)
+		{
+			while (temp->cmds[i])
+				printf("(%s) ", temp->cmds[i++]);
+			i = 0;
+			temp = temp->next;
+			if (temp)
+				printf("\n---pipe---\n");
 		}
 */
