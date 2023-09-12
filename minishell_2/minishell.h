@@ -49,5 +49,7 @@ void		cd(int argc, char *args);
 void		pwd(void);
 void	 	print_env(t_env *env);
 t_env		*export(char *str, t_env *exp);
+t_env		*unset(char *element, t_env *env);
+void		free_env(t_env *exp);
 
 #endif
