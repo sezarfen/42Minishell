@@ -101,7 +101,7 @@ char	**the_lexer(char *str)
 			k = i;
 			while (str[i] != ' ' && str[i])
 			{
-				if (str[i] == '"')
+				if (str[i] == '"') // this part can be named as like "quote_flags" ?
 					f++;
 				while (f == 1)
 				{
