@@ -88,7 +88,7 @@ int main(int ac, char **av, char **the_env)
 		if (!ft_strncmp(lexer->tokens[0], "env", ft_strlen(lexer->tokens[0])))
 			print_env(env_list);
 		if (!ft_strncmp(lexer->tokens[0], "unset", ft_strlen(lexer->tokens[0])))
-			unset(lexer->tokens[1], env_list);
+			env_list = unset(lexer->tokens[1], env_list);
 	}
 	return (0);
 }
