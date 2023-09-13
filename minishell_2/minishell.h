@@ -37,6 +37,7 @@ typedef	struct s_env
 int			split_len(char **split);
 char		**the_lexer(char *str);
 int			equal_len(char *str);
+void		free_split(char **split);
 t_parser	*set_parser(t_lexer *lexer);
 char		*cleaner(char *str, t_env *env);
 void		lexer_control(t_lexer *lexer);
@@ -48,8 +49,14 @@ int			is_builtin(char *str);
 void		cd(int argc, char *args);
 void		pwd(void);
 void	 	print_env(t_env *env);
-t_env		*export(char *str, t_env *exp);
-t_env		*unset(char *element, t_env *env);
+t_env		*export(char *str, t_env *env, t_env *exp);
 void		free_env(t_env *exp);
+t_env		*unset(char *element, t_env *env);
+void		output_cleaner(t_parser *parser);
+void		input_cleaner(t_parser *parser);
+char		*ft_strdup_impr(const char *s1);
+char		*get_value_by_key(char *key, t_env *env);
+void		set_right_exec(t_parser *parser);
+
 
 #endif

@@ -2,23 +2,29 @@
 
 void	output_redirect(t_parser *parser, int i)
 {
+	/*
 	parser->fd_out = open(parser->cmds[i + 1], O_CREAT | O_RDWR);
 	if (parser->fd_out == -1)
 		printf("cannot open that file...");
+	*/
 }
 
 void	input_redirect(t_parser *parser, int i)
 {
+	/*
 	parser->fd_in = open(parser->cmds[i - 1], O_CREAT | O_RDWR);
 	if (parser->fd_out == -1)
 		printf("cannot open that file...");
+	*/
 }
 
-void	fill_parser(t_parser *parser)
+void	fill_parser(t_parser *parser) // ... < , > ...  gibi kısımları node'dan çıkaralım 
 {
-	int	i;
+	t_parser	*temp;
+	int			i;
 
 	i = 0;
+	temp = parser;
 	while (parser)
 	{
 		parser->is_builtin = is_builtin(parser->cmds[0]);
@@ -33,6 +39,9 @@ void	fill_parser(t_parser *parser)
 		i = 0;
 		parser = parser->next;
 	}
+	output_cleaner(temp);
+	input_cleaner(temp);
+	set_right_exec(temp);
 }
 
 t_lexer	*init_lexer(void)
@@ -83,16 +92,21 @@ int main(int ac, char **av, char **the_env)
 		lexer = init_lexer();
 		parser = set_parser(lexer);
 		fill_parser(parser);
-		if (!ft_strncmp(lexer->tokens[0], "export", ft_strlen(lexer->tokens[0])))
-			env_list = export(lexer->tokens[1], env_list);
-		if (!ft_strncmp(lexer->tokens[0], "env", ft_strlen(lexer->tokens[0])))
-			print_env(env_list);
-		if (!ft_strncmp(lexer->tokens[0], "unset", ft_strlen(lexer->tokens[0])))
-			env_list = unset(lexer->tokens[1], env_list);
+		int i = 0;
+		t_parser *temp = parser;
+		while (temp)
+		{
+			while (temp->cmds[i])
+				printf("(%s) ", temp->cmds[i++]);
+			printf("\n");
+			i = 0;
+			temp = temp->next;
+			if (temp)
+				printf("\n---pipe---\n");
+		}
 	}
 	return (0);
 }
-
 
 /*
 		LEXER İÇERİKLERİNİ CLEANER ' A SOKMA [DAHA SONRA YAPILMASI DAHA DOĞRU OLABİLİR]
@@ -113,5 +127,25 @@ int main(int ac, char **av, char **the_env)
 			temp = temp->next;
 			if (temp)
 				printf("\n---pipe---\n");
+		}
+
+		// PRINT THE CLEANED PARSER
+		printf("\n=========CLEANED PARSER=========\n");
+		t_parser	*temp;
+		int			i;
+		temp = parser;
+		i = 0;
+		while (temp)
+		{
+			while (temp->cmds[i])
+			{
+				temp->cmds[i] = cleaner(temp->cmds[i], env_list);
+				printf("%s ", temp->cmds[i++]);
+			}
+			i = 0;
+			printf("\n");
+			temp = temp->next;
+			if (temp)
+				printf("\n|==(pipe found)==|\n");
 		}
 */

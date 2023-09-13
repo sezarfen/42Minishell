@@ -17,16 +17,16 @@ void	free_env(t_env *exp)
 	free(exp);
 }
 
-t_env	*export(char *str, t_env *env) // deneme amaçlıdır
-{
-	t_env	*temp;
+t_env	*export(char *str, t_env *env, t_env *exp) // deneme amaçlıdır
+{													// sanırım export içerisine de ekliyor
+	t_env	*temp;									// bilen birine sor
 	int		len;
 	int		i;
 
 	len = split_len(env->key);
 	if (str == NULL)
 	{
-		print_env(env);
+		print_env(exp);
 		return (env);
 	}
 	temp = malloc(sizeof(t_env));

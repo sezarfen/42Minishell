@@ -32,6 +32,30 @@ void	print_env(t_env *env)
 	}
 }
 
+char	*get_value_by_key(char *key, t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (env->key[i])
+	{
+		if (!ft_strncmp(env->key[i], key, ft_strlen(key)))
+			return (env->value[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+void	free_split(char **split)
+{
+	int	i;
+
+	i = split_len(split) - 1;
+	while (i >= 0)
+		free(split[i--]);
+	free(split);
+}
+
 // "Sa$USER" -> Safdundar
 // 'Sa$USER' -> Safdundar
 // Sa$USER   -> Safdundar

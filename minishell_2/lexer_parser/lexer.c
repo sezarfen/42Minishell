@@ -78,6 +78,26 @@ void	count_quotes(char *str, int i, int j, int k)
 	}	
 }
 
+void	pass_quotes(char *str, int *i, int *f)
+{
+	if (str[*i] == '"')
+		(*f)++;
+	while (*f == 1)
+	{
+		(*i)++;
+		if (str[*i] == '"')
+			(*f)--;
+	}
+	if (str[*i] == '\'')
+		(*f)++;
+	while (*f == 1)
+	{
+		(*i)++;
+		if (str[*i] == '\'')
+			(*f)--;
+	}
+}
+
 char	**the_lexer(char *str)
 {
 	char	**lexer;
@@ -101,33 +121,14 @@ char	**the_lexer(char *str)
 			k = i;
 			while (str[i] != ' ' && str[i])
 			{
-				if (str[i] == '"') // this part can be named as like "quote_flags" ?
-					f++;
-				while (f == 1)
-				{
-					i++;
-					if (str[i] == '"')
-						f--;
-				}
-				if (str[i] == '\'')
-					f++;
-				while (f == 1)
-				{
-					i++;
-					if (str[i] == '\'') // | "123 asd"
-						f--;
-				}
+				pass_quotes(str, &i, &f);
 				if (is_special(str + i)) // a><a gibi bir case sorun çıkarıyordu // altta if (... && !is_special )
 				{
 					if (str[i - 1] != ' ' && str[i - 1] && !is_special(str + i - 1))
-					{
-						lexer[wc] = malloc(sizeof(char) * (i - k + 1));
-						ft_strlcpy(lexer[wc++], str + k, i - k + 1);
-					}
+						lexer[wc++] = ft_substr(str, k, i - k);
 					k = i;
 					i += is_special(str + i);
-					lexer[wc] = malloc(sizeof(char) * (i - k + 1));
-					ft_strlcpy(lexer[wc++], str + k, i - k + 1);
+					lexer[wc++] = ft_substr(str, k, i - k);
 					while (str[i] == ' ' && str[i++]); // if there is any ' ' it will pass
 					k = i;
 					if (is_special(str + i))
@@ -137,8 +138,7 @@ char	**the_lexer(char *str)
 				}
 				i++;
 			}
-			lexer[wc] = malloc(sizeof(char) * (i - k + 1));
-			ft_strlcpy(lexer[wc++], str + k, i - k + 1);
+			lexer[wc++] = ft_substr(str, k, i - k);
 		}
 	}
 	lexer[wc] = NULL;
