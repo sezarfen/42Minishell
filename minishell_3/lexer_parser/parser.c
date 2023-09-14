@@ -24,16 +24,33 @@ void	set_heredoc(t_parser *parser, int i)
 	parser->hd_out = fd;
 }
 
-void	fill_parser(t_parser *parser) // ... < , > ...  gibi kısımları node'dan çıkaralım 
+void	clean_parser(t_parser *parser, t_env *env) // gonna set is_builtin here otherwise, it can't understand something like "ec"'ho'
 {
-	t_parser	*temp;
+	int	i;
+
+	i = 0;
+	while (parser)
+	{
+		while (parser->cmds[i])
+		{
+			parser->cmds[i] = cleaner(parser->cmds[i], env);
+			i++;
+		}
+		parser->is_builtin = is_builtin(parser->cmds[0]);
+		i = 0;
+		parser = parser->next;
+	}
+}
+
+void	fill_parser(t_parser *parser, t_env *env) // ... < , > ...  gibi kısımları node'dan çıkaralım 
+{
+	t_parser	*temp; // temp ve i fonksiyona parametre olarak verilebilir
 	int			i;
 
 	i = 0;
 	temp = parser;
 	while (parser)
 	{
-		parser->is_builtin = is_builtin(parser->cmds[0]);
 		while (parser->cmds[i]) // buraya bir append ve heredoc da eklenebilir
 		{
 			if (is_output_redirect(parser->cmds[i]))
@@ -51,7 +68,7 @@ void	fill_parser(t_parser *parser) // ... < , > ...  gibi kısımları node'dan 
 	}
 	output_cleaner(temp, 0, 0);
 	input_cleaner(temp, 0, 0);
-	set_right_exec(temp); // bu kısım cleanerdan sonra çalışabilir
+	clean_and_set_exec(temp, env); // cleani bu kısmın içerisinde yapıyorum
 }
 
 void	collect_tokens(t_parser *parser, int k, int i, t_lexer *lexer)

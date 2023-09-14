@@ -27,8 +27,9 @@ void	set_exec(t_parser *parser) // munmap_chunk(): invalid pointer // hatası al
 	free_split(paths);
 }
 
-void	set_right_exec(t_parser *parser)
+void	clean_and_set_exec(t_parser *parser, t_env *env)
 {
+	clean_parser(parser, env);
 	while (parser)
 	{
 		set_exec(parser);

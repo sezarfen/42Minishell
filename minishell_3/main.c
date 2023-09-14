@@ -47,7 +47,7 @@ int main(int ac, char **av, char **the_env)
 	{
 		lexer = init_lexer();
 		parser = set_parser(lexer, 0, 0);
-		fill_parser(parser); // set_right_exec ' i , cleanerdan geçirdikten sonra yapmak daha doğru olabilir
+		fill_parser(parser, env_list); // set_right_exec ' i , cleanerdan geçirdikten sonra yapmak daha doğru olabilir
 		int i = 0;
 		t_parser *temp = parser;
 		while (temp)
@@ -55,7 +55,7 @@ int main(int ac, char **av, char **the_env)
 			while (temp->cmds[i])
 				printf("(%s) ", temp->cmds[i++]);
 			printf("\n");
-			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin);
+			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_out:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_out);
 			i = 0;
 			temp = temp->next;
 			if (temp)
