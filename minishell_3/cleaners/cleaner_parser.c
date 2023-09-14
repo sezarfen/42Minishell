@@ -19,9 +19,10 @@ void	output_cleaner(t_parser *parser, int i, int k) // probably have leaks :/
 		{
 			if (is_output_redirect(parser->cmds[i]) || is_append(parser->cmds[i]))
 				i += 2;
-			else if (!ft_strncmp(parser->cmds[i], ".heredoc.txt", 12))
-				i += 2; // heredoc case ' i, sonrasında başka bir yere taşınabilir
-			if (parser->cmds[i] && !is_output_redirect(parser->cmds[i]) && !is_append(parser->cmds[i])) // > a.txt > b.txt gibi durumlarda yardımcı oluyor (son 2 case)
+			else if (is_heredoc(parser->cmds[i]))
+				i += 2;
+			if (parser->cmds[i] && !is_output_redirect(parser->cmds[i]) 
+					&& !is_append(parser->cmds[i]) && !is_heredoc(parser->cmds[i])) // > a.txt > b.txt gibi durumlarda yardımcı oluyor (son 2 case)
 				parser->cmds[k++] = ft_strdup_impr(parser->cmds[i++]);
 		}
 		parser->cmds[k] = NULL;
