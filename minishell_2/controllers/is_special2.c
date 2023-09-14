@@ -20,3 +20,10 @@ int	is_builtin(char *str)
 		return (8);
 	return (0); // indicates, it is not a buildin function
 }
+
+int	is_append(char *str)
+{
+	if (!ft_strncmp(str, ">>", ft_strlen(str)))
+		return (1);
+	return (0);
+}

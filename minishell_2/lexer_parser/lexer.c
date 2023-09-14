@@ -98,19 +98,13 @@ void	pass_quotes(char *str, int *i, int *f)
 	}
 }
 
-char	**the_lexer(char *str)
+char	**the_lexer(char *str, int i, int k, int f)
 {
 	char	**lexer;
-	int		i;
-	int		k;
-	int		f;
 	int		wc;
 
 	count_quotes(str, 0, 0, 0);
 	lexer = malloc(sizeof(char *) * (lexer_wc(str) + 1));  // lexer_wc nin değişmesi lazım
-	i = 0;
-	k = 0;
-	f = 0;
 	wc = 0;
 	while (str[i])
 	{

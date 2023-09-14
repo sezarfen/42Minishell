@@ -35,7 +35,7 @@ typedef	struct s_env
 # include <signal.h>
 
 int			split_len(char **split);
-char		**the_lexer(char *str);
+char		**the_lexer(char *str, int i, int k, int f);
 int			equal_len(char *str);
 void		free_split(char **split);
 t_parser	*set_parser(t_lexer *lexer);

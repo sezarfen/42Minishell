@@ -10,7 +10,7 @@ void	set_exec(t_parser *parser) // munmap_chunk(): invalid pointer // hatası al
 	path = getenv("PATH"); // do not free that returned value
 	paths = ft_split(path, ':');
 	i = 0;
-	while (paths[i])
+	while (paths[i] && !parser->is_builtin)
 	{
 		command = ft_strjoin(paths[i], "/", 0);
 		command = ft_strjoin(command, parser->cmds[0], 1);

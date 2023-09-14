@@ -28,7 +28,7 @@ void	fill_parser(t_parser *parser) // ... < , > ...  gibi kısımları node'dan 
 	while (parser)
 	{
 		parser->is_builtin = is_builtin(parser->cmds[0]);
-		while (parser->cmds[i])
+		while (parser->cmds[i]) // buraya bir append ve heredoc da eklenebilir
 		{
 			if (is_output_redirect(parser->cmds[i]))
 				output_redirect(parser, i);
@@ -41,7 +41,7 @@ void	fill_parser(t_parser *parser) // ... < , > ...  gibi kısımları node'dan 
 	}
 	output_cleaner(temp);
 	input_cleaner(temp);
-	set_right_exec(temp);
+	set_right_exec(temp); // bu kısım cleanerdan sonra çalışabilir
 }
 
 t_lexer	*init_lexer(void)
@@ -51,7 +51,7 @@ t_lexer	*init_lexer(void)
 
 	str = readline("minishell$ ");
 	tlexer = malloc(sizeof(t_lexer));
-	tlexer->tokens = the_lexer(str);
+	tlexer->tokens = the_lexer(str, 0, 0, 0);
 	tlexer->size = split_len(tlexer->tokens);
 	free(str);
 	return (tlexer);
@@ -91,19 +91,7 @@ int main(int ac, char **av, char **the_env)
 	{
 		lexer = init_lexer();
 		parser = set_parser(lexer);
-		fill_parser(parser);
-		int i = 0;
-		t_parser *temp = parser;
-		while (temp)
-		{
-			while (temp->cmds[i])
-				printf("(%s) ", temp->cmds[i++]);
-			printf("\n");
-			i = 0;
-			temp = temp->next;
-			if (temp)
-				printf("\n---pipe---\n");
-		}
+		fill_parser(parser); // set_right_exec ' i , cleanerdan geçirdikten sonra yapmak daha doğru olabilir
 	}
 	return (0);
 }
@@ -147,5 +135,21 @@ int main(int ac, char **av, char **the_env)
 			temp = temp->next;
 			if (temp)
 				printf("\n|==(pipe found)==|\n");
+		}
+
+		// DIFFERENT PARSER PRINT (WITH ATTRIBUTES)
+
+		int i = 0;
+		t_parser *temp = parser;
+		while (temp)
+		{
+			while (temp->cmds[i])
+				printf("(%s) ", temp->cmds[i++]);
+			printf("\n");
+			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin);
+			i = 0;
+			temp = temp->next;
+			if (temp)
+				printf("\n---pipe---\n");
 		}
 */
