@@ -21,9 +21,7 @@ void	set_heredoc(t_parser *parser, int i)
 		ft_putchar_fd('\n', fd);
 		free(str);
 	}
-	free(parser->cmds[i]);
-	parser->cmds[i] = ft_strdup(".heredoc.txt");
-	close(fd);
+	parser->hd_out = fd;
 }
 
 void	fill_parser(t_parser *parser) // ... < , > ...  gibi kısımları node'dan çıkaralım 
