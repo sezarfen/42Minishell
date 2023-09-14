@@ -1,0 +1,30 @@
+$$		commands that will be handled		$$
+
+echo	-n
+cd
+pwd
+export
+unset
+env
+exit
+
+$$		other stuffs	$$
+
+$$$$$$$$$$$$$$$$$
+|  					-> pipe
+<  					-> stdin from file
+>  					-> write on file 
+<< 					-> heredoc
+>> 					-> append işlemi yapıyor
+$$$$$$$$$$$$$$$$$
+
+/*
+
+exec commandları o anki process ' i bitiriyor
+o yüzden child process'e geçmemiz lazım
+
+*/
+
+
+>> (append) modunda dosyayı açtığımız zaman open(file_name, O_RDWR | O_APPEND) şeklinde açabiliriz
+ardından girilen girdiden önce /n atmak gerekiyor olabilir
