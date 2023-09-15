@@ -39,6 +39,7 @@ int			split_len(char **split);
 char		**the_lexer(char *str, int i, int k, int f);
 int			equal_len(char *str);
 void		free_split(char **split);
+void		print_split(char **split);
 t_parser	*set_parser(t_lexer *lexer, int i, int k);
 char		*cleaner(char *str, t_env *env);
 void		lexer_control(t_lexer *lexer);
@@ -64,5 +65,7 @@ void		fill_parser(t_parser *parser, t_env *env);
 void		input_redirect(t_parser *parser, int i);
 void		output_redirect(t_parser *parser, int i);
 void		open_in_append(t_parser *parser, int i);
+void		clean_parser(t_parser *parser, t_env *env);
+void		to_execute(t_parser *parser, char **env);
 
 #endif

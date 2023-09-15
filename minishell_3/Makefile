@@ -5,7 +5,8 @@ CONTROLLERS = controllers/controllers.c controllers/is_special.c controllers/is_
 LEXER_PARSER = lexer_parser/parser.c lexer_parser/lexer.c lexer_parser/parser_utils.c
 BUILTINS =	builtins/cd.c builtins/export.c builtins/pwd.c builtins/unset.c
 CLEANERS = cleaners/cleaner.c cleaners/cleaner_parser.c cleaners/ft_strdup_impr.c
-OBJS = $(SRCS:.c=.o) $(CONTROLLERS:.c=.o) $(LEXER_PARSER:.c=.o) $(BUILTINS:.c=.o) $(CLEANERS:.c=.o)
+EXECUTER = executer/to_execute.c
+OBJS = $(SRCS:.c=.o) $(CONTROLLERS:.c=.o) $(LEXER_PARSER:.c=.o) $(BUILTINS:.c=.o) $(CLEANERS:.c=.o) $(EXECUTER:.c=.o)
 CC = gcc
 
 all: $(NAME)

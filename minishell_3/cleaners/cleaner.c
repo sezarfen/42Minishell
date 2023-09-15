@@ -31,13 +31,13 @@ char	*find_in_env(char *str, int *i, t_env *env)
 	int	j;
 	
 	n = 0;
-	while (str[n] != ' ' && str[n] != '"' && str[n] != '\'' && str[n])
+	while (str[n] != ' ' && str[n] != '"' && str[n] != '\'' && str[n]) // "$US'" gibi bir case ' de durduruyor ama zaten US' diye bir değişken yok, özellikle bir şey denemek isteyenler için handle edilebilir
 		n++;
 	*i += n;
 	j = 0;
 	while (env->key[j])
 	{
-		if (!ft_strncmp(str + 1, env->key[j], n - 1))
+		if (!ft_strncmp(str + 1, env->key[j], ft_strlen(env->key[j])))
 			return (ft_strdup(env->value[j]));
 		j++;
 	}
@@ -61,13 +61,14 @@ char	*cleaner(char *str, t_env *env) // echo $USER'$USER' gibi bir case'de hata 
 		{
 			clean = ft_strjoin(clean, ft_substr(str, k, i - k), 1);
 			k = ++i;
-			while (str[i] != '"' && str[i])
-			{
+			while (str[i] != '"' && str[i]) // "$USER"'$USER' case'i sıkıntılı
+			{								// sebebi single quote parsing olabilir, tekrar bakılabilir
 				if (str[i] == '$')
 				{
 					clean = ft_strjoin(clean, ft_substr(str, k, i - k), 1);
 					clean = ft_strjoin(clean, find_in_env(str + i, &i, env), 1);
 					k = i + (str[i] == '"'); // hi norminette
+					printf("i : %d, k : %d\n", i , k);
 				}
 				i++;
 			}
@@ -93,6 +94,7 @@ char	*cleaner(char *str, t_env *env) // echo $USER'$USER' gibi bir case'de hata 
 		}
 		i++;
 	}
+	free(str);
 	return (clean);
 }
 

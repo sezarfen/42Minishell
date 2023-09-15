@@ -56,6 +56,15 @@ void	free_split(char **split)
 	free(split);
 }
 
+void	print_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+		printf("%s\n", split[i++]);
+}
+
 // "Sa$USER" -> Safdundar
 // 'Sa$USER' -> Safdundar
 // Sa$USER   -> Safdundar

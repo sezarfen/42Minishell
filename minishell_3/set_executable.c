@@ -14,7 +14,6 @@ void	set_exec(t_parser *parser) // munmap_chunk(): invalid pointer // hatası al
 	{
 		command = ft_strjoin(paths[i], "/", 0);
 		command = ft_strjoin(command, parser->cmds[0], 1);
-		printf("path searched -> %s\n", command);
 		if (!access(command, X_OK))
 		{
 			free(parser->cmds[0]);

@@ -28,17 +28,17 @@ void	lexer_control(t_lexer *lexer)
 		if (!ft_strncmp(lexer->tokens[i], "|", 1) && check_next(lexer->tokens[i + 1]))
 		{
 			printf("minishell: syntax error near unexpected token `|'\n");
-			exit(1);
+			return ;
 		}
 		else if (case_one(lexer->tokens[i]) && check_next(lexer->tokens[i + 1]))
 		{
 			printf("minishell: syntax error near unexpected token `newline'\n");
-			exit(1);
+			return ;
 		}
 		else if (!ft_strncmp(lexer->tokens[i], "<", 1) && (i - 1 < 0 || check_next(lexer->tokens[i + 1])))
 		{
 			printf("minishell: syntax error near unexpected token `newline'\n");
-			exit(1);
+			return ;
 		}
 		i++;
 	}
