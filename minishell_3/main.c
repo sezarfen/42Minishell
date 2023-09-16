@@ -12,6 +12,7 @@ t_lexer	*init_lexer(void)
 	prompt = ft_strjoin(prompt, cwd, 1);
 	prompt = ft_strjoin(prompt, ")\n└(minishell)$>\001\033[0m\002 ", 1);
 	str = readline(prompt);
+	add_history(str);
 	tlexer = malloc(sizeof(t_lexer));
 	tlexer->tokens = the_lexer(str, 0, 0, 0);
 	tlexer->size = split_len(tlexer->tokens);
