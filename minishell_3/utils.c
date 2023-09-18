@@ -72,6 +72,19 @@ int	get_max(int a, int b)
 	return (b);
 }
 
+char	*set_propmt(char *cwd)
+{
+	char	*prompt;
+
+	prompt = ft_strdup("\033[34m┌─(\033[0m\033[31m");
+	prompt = ft_strjoin(prompt, cwd, 1);
+	prompt = ft_strjoin(prompt, "\033[0m\033[34m)"
+	"───(\033[0m\033[31mhcivici & fdundar\033[0m\033[34m)\n"
+	"└(\033[0m\033[1m\033[33mminishell\033[0m\033[34m)$>\033[0m ", 1);
+	return (prompt);
+}
+
+
 // "Sa$USER" -> Safdundar
 // 'Sa$USER' -> Safdundar
 // Sa$USER   -> Safdundar

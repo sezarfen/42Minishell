@@ -42,7 +42,7 @@ void		free_split(char **split);
 void		print_split(char **split);
 t_parser	*set_parser(t_lexer *lexer, int i, int k);
 char		*cleaner(char *str, t_env *env);
-void		lexer_control(t_lexer *lexer);
+int			lexer_control(t_lexer *lexer);
 int			is_special(char *str);
 int			is_pipe(char *str);
 int			is_output_redirect(char *str);
@@ -68,5 +68,6 @@ void		open_in_append(t_parser *parser, int i);
 void		clean_parser(t_parser *parser, t_env *env);
 void		to_execute(t_parser *parser, char **env);
 int			get_max(int a, int b);
+char		*set_propmt(char *cwd);
 
 #endif

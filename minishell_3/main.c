@@ -8,9 +8,7 @@ t_lexer	*init_lexer(void)
 	char 	cwd[256];
 
 	getcwd(cwd, 256);
-	prompt = ft_strdup("\001\033[1;32m\002┌─(");
-	prompt = ft_strjoin(prompt, cwd, 1);
-	prompt = ft_strjoin(prompt, ")\n└(minishell)$>\001\033[0m\002 ", 1);
+	prompt = set_propmt(cwd);
 	str = readline(prompt);
 	add_history(str);
 	tlexer = malloc(sizeof(t_lexer));
@@ -48,35 +46,21 @@ int main(int ac, char **av, char **the_env)
 	t_env		*env_list;
 	t_env		*exp_list;
 
-	//lexer_control(lexer);
 	env_list = set_env(the_env);
 	exp_list = set_env(the_env);
 	while (1)
 	{
 		lexer = init_lexer();
+		if (lexer->tokens[0] == NULL || lexer_control(lexer))
+			continue ;
 		parser = set_parser(lexer, 0, 0);
 		fill_parser(parser, env_list);
-/////////////////////////////////////////
-
-		int i = 0;
-		t_parser *temp = parser;
-		while (temp)
-		{
-			while (temp->cmds[i])
-				printf("(%s) ", temp->cmds[i++]);
-			printf("\n");
-			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_in:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_in);
-			i = 0;
-			temp = temp->next;
-			if (temp)
-				printf("\n---pipe---\n");
-		}
-
-//////////////////////////////////////////
 		to_execute(parser, the_env);
 	}
 	return (0);
 }
+
+
 
 /*
 		LEXER İÇERİKLERİNİ CLEANER ' A SOKMA [DAHA SONRA YAPILMASI DAHA DOĞRU OLABİLİR]
@@ -134,4 +118,21 @@ int main(int ac, char **av, char **the_env)
 			if (temp)
 				printf("\n---pipe---\n");
 		}
-*/
+
+/////////////////////////////////////////
+	/*
+		int i = 0;
+		t_parser *temp = parser;
+		while (temp)
+		{
+			while (temp->cmds[i])
+				printf("(%s) ", temp->cmds[i++]);
+			printf("\n");
+			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_in:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_in);
+			i = 0;
+			temp = temp->next;
+			if (temp)
+				printf("\n---pipe---\n");
+		}
+	*/
+//////////////////////////////////////////
