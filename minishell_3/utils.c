@@ -84,6 +84,18 @@ char	*set_propmt(char *cwd)
 	return (prompt);
 }
 
+int	parser_len(t_parser *parser)
+{
+	int	i;
+
+	i = 0;
+	while (parser)
+	{
+		i++;
+		parser = parser->next;
+	}
+	return (i);
+}
 
 // "Sa$USER" -> Safdundar
 // 'Sa$USER' -> Safdundar

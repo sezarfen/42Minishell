@@ -19,6 +19,7 @@ t_lexer	*init_lexer(void)
 	return (tlexer);
 }
 
+
 t_env	*set_env(char **the_env)
 {
 	t_env	*env;
@@ -43,19 +44,19 @@ int main(int ac, char **av, char **the_env)
 {
 	t_lexer		*lexer;
 	t_parser	*parser;
-	t_env		*env_list;
-	t_env		*exp_list;
+	t_env_exp	*env_exp;
 
-	env_list = set_env(the_env);
-	exp_list = set_env(the_env);
+	env_exp = malloc(sizeof(t_env_exp)); // bu üçünü ayrı bir fonksiyona alabiliriz
+	env_exp->env = set_env(the_env);
+	env_exp->exp = set_env(the_env);
 	while (1)
 	{
 		lexer = init_lexer();
 		if (lexer->tokens[0] == NULL || lexer_control(lexer))
 			continue ;
 		parser = set_parser(lexer, 0, 0);
-		fill_parser(parser, env_list);
-		to_execute(parser, the_env);
+		fill_parser(parser, env_exp->env);
+		to_execute(parser, the_env, env_exp->env);
 	}
 	return (0);
 }

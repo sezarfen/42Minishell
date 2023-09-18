@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-int main()
+int	main(void)
 {
-	char *str = malloc(19);
-	printf("%d\n", (int)sizeof(free(str)));
-	return (0);	
+	char	*str;
+
+	str = malloc(20);
+	if (str[i] && sizeof(free(str)))
+	{
+		hello_world();
+	}
+	return (0);
 }

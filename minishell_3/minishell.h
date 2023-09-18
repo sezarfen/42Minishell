@@ -23,6 +23,12 @@ typedef	struct s_env
 	char	**value;
 }	t_env;
 
+typedef struct s_env_exp
+{
+	struct s_env *env;
+	struct s_env *exp;
+}	t_env_exp;
+
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -66,8 +72,12 @@ void		input_redirect(t_parser *parser, int i);
 void		output_redirect(t_parser *parser, int i);
 void		open_in_append(t_parser *parser, int i);
 void		clean_parser(t_parser *parser, t_env *env);
-void		to_execute(t_parser *parser, char **env);
+void		to_execute(t_parser *parser, char **env, t_env *tenv);
 int			get_max(int a, int b);
 char		*set_propmt(char *cwd);
+void		env_builtin(t_env *env);
+void		echo(t_parser *parser);
+int			parser_len(t_parser *parser);
+void		exit_builtin(t_parser *parser);
 
 #endif

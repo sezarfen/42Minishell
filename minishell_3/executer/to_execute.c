@@ -37,25 +37,22 @@ void	execute_fork(t_parser *parser, char **env)
 	exit(127);
 }
 
-void	execute_builtin(t_parser *parser)
+void	child_builtins(t_parser *parser) // commands that will be executed in child process
+{
+	if (!ft_strncmp(parser->cmds[0], "echo", ft_strlen(parser->cmds[0])))
+		echo(parser);
+}
+
+void	execute_builtin(t_parser *parser, t_env *env)
 {
 	if (!ft_strncmp(parser->cmds[0], "cd", ft_strlen(parser->cmds[0]))) // bu coniditonlar için özel bir fonksiyon yazılabilir
 		cd(1, parser->cmds[1]);
 	else if (!ft_strncmp(parser->cmds[0], "pwd", ft_strlen(parser->cmds[0])))
 		pwd();
-}
-
-int	parser_len(t_parser *parser)
-{
-	int	i;
-
-	i = 0;
-	while (parser)
-	{
-		i++;
-		parser = parser->next;
-	}
-	return (i);
+	else if (!ft_strncmp(parser->cmds[0], "env", ft_strlen(parser->cmds[0])))
+		env_builtin(env);
+	else if (!ft_strncmp(parser->cmds[0], "exit", ft_strlen(parser->cmds[0])))
+		exit_builtin(parser);
 }
 
 void	set_pipe(int fd[], int i, int len) // need to be improved
@@ -68,7 +65,7 @@ void	set_pipe(int fd[], int i, int len) // need to be improved
 	close(fd[1]);
 }
 
-void	to_execute(t_parser *parser, char **env) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
+void	to_execute(t_parser *parser, char **env, t_env *tenv) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
 {
 	int	len;
 	int	i;
@@ -83,14 +80,15 @@ void	to_execute(t_parser *parser, char **env) // parser_len iş yapacaktır, for
 		pid = fork();
 		if (pid == 0) // indicates child process
 		{
-			if (parser->is_builtin)
-				exit(0);
 			set_pipe(fd, i, len);
-			execute_fork(parser, env);
+			if (parser->is_builtin)
+				child_builtins(parser);
+			else
+				execute_fork(parser, env);
 			exit(0);
 		}
 		else
-			execute_builtin(parser);
+			execute_builtin(parser, tenv);
 		parser = parser->next;
 		i++;
 		if (i % 2 == 0 || i == len)
