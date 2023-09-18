@@ -17,6 +17,7 @@ t_lexer	*init_lexer(void)
 	tlexer->tokens = the_lexer(str, 0, 0, 0);
 	tlexer->size = split_len(tlexer->tokens);
 	free(str);
+	free(prompt);
 	return (tlexer);
 }
 
@@ -56,7 +57,7 @@ int main(int ac, char **av, char **the_env)
 		parser = set_parser(lexer, 0, 0);
 		fill_parser(parser, env_list);
 /////////////////////////////////////////
-/*
+
 		int i = 0;
 		t_parser *temp = parser;
 		while (temp)
@@ -64,13 +65,13 @@ int main(int ac, char **av, char **the_env)
 			while (temp->cmds[i])
 				printf("(%s) ", temp->cmds[i++]);
 			printf("\n");
-			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_out:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_out);
+			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_in:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_in);
 			i = 0;
 			temp = temp->next;
 			if (temp)
 				printf("\n---pipe---\n");
 		}
-*/
+
 //////////////////////////////////////////
 		to_execute(parser, the_env);
 	}
@@ -127,7 +128,7 @@ int main(int ac, char **av, char **the_env)
 			while (temp->cmds[i])
 				printf("(%s) ", temp->cmds[i++]);
 			printf("\n");
-			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_out:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_out);
+			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_in:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_in);
 			i = 0;
 			temp = temp->next;
 			if (temp)

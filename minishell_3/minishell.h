@@ -13,7 +13,7 @@ typedef struct s_parser
 	int				fd_in;
 	int				fd_out;
 	int				is_builtin;
-	int				hd_out;
+	int				hd_in;
 	struct s_parser *next;
 }	t_parser;
 
@@ -56,7 +56,7 @@ void	 	print_env(t_env *env);
 t_env		*export(char *str, t_env *env, t_env *exp);
 void		free_env(t_env *exp);
 t_env		*unset(char *element, t_env *env);
-void		output_cleaner(t_parser *parser, int i, int k);
+void		redirect_cleaner(t_parser *parser, int i, int k);
 void		input_cleaner(t_parser *parser, int i, int k);
 char		*ft_strdup_impr(const char *s1);
 char		*get_value_by_key(char *key, t_env *env);
@@ -67,5 +67,6 @@ void		output_redirect(t_parser *parser, int i);
 void		open_in_append(t_parser *parser, int i);
 void		clean_parser(t_parser *parser, t_env *env);
 void		to_execute(t_parser *parser, char **env);
+int			get_max(int a, int b);
 
 #endif

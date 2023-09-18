@@ -1,7 +1,7 @@
 #include "../minishell.h"
 
 
-void	cd(int argc, char *args)
+void	cd(int argc, char *args) // main process ' de çalıştırmak lazım
 {
 	if (argc > 1)
 	{

@@ -65,6 +65,13 @@ void	print_split(char **split)
 		printf("%s\n", split[i++]);
 }
 
+int	get_max(int a, int b)
+{
+	if (a > b)
+		return (a);
+	return (b);
+}
+
 // "Sa$USER" -> Safdundar
 // 'Sa$USER' -> Safdundar
 // Sa$USER   -> Safdundar

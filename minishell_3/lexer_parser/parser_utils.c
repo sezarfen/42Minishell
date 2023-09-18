@@ -9,7 +9,7 @@ void	output_redirect(t_parser *parser, int i)
 
 void	input_redirect(t_parser *parser, int i)
 {
-	parser->fd_in = open(parser->cmds[i - 1], O_CREAT | O_RDWR, 0777);
+	parser->fd_in = open(parser->cmds[i + 1], O_CREAT | O_RDWR, 0777);
 	if (parser->fd_out == -1)
 		printf("cannot open that file...");
 }

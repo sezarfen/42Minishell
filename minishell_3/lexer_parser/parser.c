@@ -21,7 +21,7 @@ void	set_heredoc(t_parser *parser, int i)
 		ft_putchar_fd('\n', fd);
 		free(str);
 	}
-	parser->hd_out = fd;
+	parser->hd_in = fd;
 }
 
 void	clean_parser(t_parser *parser, t_env *env) // gonna set is_builtin here otherwise, it can't understand something like "ec"'ho'
@@ -66,8 +66,8 @@ void	fill_parser(t_parser *parser, t_env *env) // ... < , > ...  gibi kısımlar
 		i = 0;
 		parser = parser->next;
 	}
-	output_cleaner(temp, 0, 0);
-	input_cleaner(temp, 0, 0);
+	redirect_cleaner(temp, 0, 0);
+	//input_cleaner(temp, 0, 0);
 	clean_and_set_exec(temp, env); // cleani bu kısmın içerisinde yapıyorum
 }
 

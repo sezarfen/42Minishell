@@ -11,13 +11,14 @@
 */
 
 
-void	output_cleaner(t_parser *parser, int i, int k) // probably have leaks :/
+void	redirect_cleaner(t_parser *parser, int i, int k) // probably have leaks :/
 {
 	while (parser)
 	{
 		while (parser->cmds[i])
 		{
-			if (is_output_redirect(parser->cmds[i]) || is_append(parser->cmds[i]))
+			if (is_output_redirect(parser->cmds[i]) || is_append(parser->cmds[i])
+				|| is_input_redirect(parser->cmds[i]))
 				i += 2;
 			else if (is_heredoc(parser->cmds[i]))
 				i += 2;
