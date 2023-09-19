@@ -37,7 +37,7 @@ char	*find_in_env(char *str, int *i, t_env *env)
 	j = 0;
 	while (env->key[j])
 	{
-		if (!ft_strncmp(str + 1, env->key[j], ft_strlen(env->key[j])))
+		if (!ft_strncmp(str + 1, env->key[j], n + 1))
 			return (ft_strdup(env->value[j]));
 		j++;
 	}

@@ -40,15 +40,23 @@ t_env	*set_env(char **the_env)
 	return (env);
 }
 
+t_env_exp	*set_env_exp(char **the_env)
+{
+	t_env_exp	*env_exp;
+
+	env_exp = malloc(sizeof(t_env_exp));
+	env_exp->env = set_env(the_env);
+	env_exp->exp = set_env(the_env);
+	return (env_exp);
+}
+
 int main(int ac, char **av, char **the_env)
 {
 	t_lexer		*lexer;
 	t_parser	*parser;
 	t_env_exp	*env_exp;
 
-	env_exp = malloc(sizeof(t_env_exp)); // bu üçünü ayrı bir fonksiyona alabiliriz
-	env_exp->env = set_env(the_env);
-	env_exp->exp = set_env(the_env);
+	env_exp = set_env_exp(the_env);
 	while (1)
 	{
 		lexer = init_lexer();
@@ -60,8 +68,6 @@ int main(int ac, char **av, char **the_env)
 	}
 	return (0);
 }
-
-
 
 /*
 		LEXER İÇERİKLERİNİ CLEANER ' A SOKMA [DAHA SONRA YAPILMASI DAHA DOĞRU OLABİLİR]

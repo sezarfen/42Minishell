@@ -39,6 +39,7 @@ void	execute_fork(t_parser *parser, char **env)
 
 void	child_builtins(t_parser *parser) // commands that will be executed in child process
 {
+	dup_redirections(parser);
 	if (!ft_strncmp(parser->cmds[0], "echo", ft_strlen(parser->cmds[0])))
 		echo(parser);
 }

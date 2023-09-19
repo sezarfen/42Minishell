@@ -97,6 +97,20 @@ int	parser_len(t_parser *parser)
 	return (i);
 }
 
+int	ft_isfulldigit(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 // "Sa$USER" -> Safdundar
 // 'Sa$USER' -> Safdundar
 // Sa$USER   -> Safdundar
@@ -146,3 +160,6 @@ int main(int ac, char **av, char **env)
 	return (0); 
 }
 */
+
+// char *args = 
+// execve("ls", {"ls", "-l", "-a"}, env);

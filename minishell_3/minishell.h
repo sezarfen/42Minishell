@@ -79,5 +79,6 @@ void		env_builtin(t_env *env);
 void		echo(t_parser *parser);
 int			parser_len(t_parser *parser);
 void		exit_builtin(t_parser *parser);
+int			ft_isfulldigit(char *str);
 
 #endif
