@@ -46,13 +46,13 @@ void	child_builtins(t_parser *parser) // commands that will be executed in child
 
 void	execute_builtin(t_parser *parser, t_env *env)
 {
-	if (!ft_strncmp(parser->cmds[0], "cd", ft_strlen(parser->cmds[0]))) // bu coniditonlar için özel bir fonksiyon yazılabilir
+	if (!ft_strncmp(parser->cmds[0], "cd", get_max(ft_strlen(parser->cmds[0]), 2))) // bu coniditonlar için özel bir fonksiyon yazılabilir
 		cd(1, parser->cmds[1]);
-	else if (!ft_strncmp(parser->cmds[0], "pwd", ft_strlen(parser->cmds[0])))
-		pwd();
-	else if (!ft_strncmp(parser->cmds[0], "env", ft_strlen(parser->cmds[0])))
+	else if (!ft_strncmp(parser->cmds[0], "pwd", get_max(ft_strlen(parser->cmds[0]), 3))) // pw yazsam pwd anlıyor pwd nin mi ft_strlen'i daha uzun parser->cmds[0] mı onu kontrol et
+		pwd(); // hangisi max diye bak uzunluklardan// bir üst satırdaki yorum
+	else if (!ft_strncmp(parser->cmds[0], "env", get_max(ft_strlen(parser->cmds[0]), 3)))
 		env_builtin(env);
-	else if (!ft_strncmp(parser->cmds[0], "exit", ft_strlen(parser->cmds[0])))
+	else if (!ft_strncmp(parser->cmds[0], "exit", get_max(ft_strlen(parser->cmds[0]), 4)))
 		exit_builtin(parser);
 }
 
