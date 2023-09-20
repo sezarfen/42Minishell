@@ -1,5 +1,15 @@
 #include "../minishell.h"
 
+void	add_to_penv(char *str, t_env **penv)
+{
+	char	*key;
+	char	*value;
+
+	key = ft_substr(str, 0, equal_len(str));
+	value = ft_substr(str, equal_len(str) + 1, ft_strlen(str));
+	add_to_env(&(*penv), key, value); // updates or generates
+}
+
 char	**set_exec_args(t_parser *parser)
 {
 	char	**args;
@@ -40,20 +50,27 @@ void	execute_fork(t_parser *parser, char **env)
 void	child_builtins(t_parser *parser) // commands that will be executed in child process
 {
 	dup_redirections(parser);
-	if (!ft_strncmp(parser->cmds[0], "echo", ft_strlen(parser->cmds[0])))
+	if (!ft_strcmp(parser->cmds[0], "echo"))
 		echo(parser);
 }
 
-void	execute_builtin(t_parser *parser, t_env *env)
+void	execute_builtin(t_parser *parser, t_ee **ee) // main process'deki çıktılarda pipe'dan geçirilmeli
 {
-	if (!ft_strncmp(parser->cmds[0], "cd", get_max(ft_strlen(parser->cmds[0]), 2))) // bu coniditonlar için özel bir fonksiyon yazılabilir
+	if (ft_iscontain(parser->cmds[0], '='))
+		add_to_penv(parser->cmds[0], &((*ee)->penv)); // add to export gibi bir şey yazabiliriz
+	else if(!ft_strcmp(parser->cmds[0], "cd")) 
 		cd(1, parser->cmds[1]);
-	else if (!ft_strncmp(parser->cmds[0], "pwd", get_max(ft_strlen(parser->cmds[0]), 3))) // pw yazsam pwd anlıyor pwd nin mi ft_strlen'i daha uzun parser->cmds[0] mı onu kontrol et
-		pwd(); // hangisi max diye bak uzunluklardan// bir üst satırdaki yorum
-	else if (!ft_strncmp(parser->cmds[0], "env", get_max(ft_strlen(parser->cmds[0]), 3)))
-		env_builtin(env);
-	else if (!ft_strncmp(parser->cmds[0], "exit", get_max(ft_strlen(parser->cmds[0]), 4)))
+	else if (!ft_strcmp(parser->cmds[0], "pwd"))
+		pwd();
+	else if (!ft_strcmp(parser->cmds[0], "env"))
+		env_builtin((*ee)->env);
+	else if (!ft_strcmp(parser->cmds[0], "exit"))
 		exit_builtin(parser);
+	else if (!ft_strcmp(parser->cmds[0], "unset"))
+		unset(parser->cmds[1], &((*ee)->env));
+	else if (!ft_strcmp(parser->cmds[0], "export"))
+		export(parser->cmds[1], &((*ee)->env), (*ee)->penv);
+	////  is_contain_equal diye bir şey yapalım (başa eklemek lazım, env=3 gibi bir şey gelirse ona girsin)
 }
 
 void	set_pipe(int fd[], int i, int len) // need to be improved
@@ -66,7 +83,7 @@ void	set_pipe(int fd[], int i, int len) // need to be improved
 	close(fd[1]);
 }
 
-void	wait_and_set_status(pid_t pid, t_env **tenv, int i, int len)
+void	wait_and_set_status(pid_t pid, t_env **penv, int i, int len)
 {
 	int		exit_status;
 	char	*status;
@@ -75,12 +92,12 @@ void	wait_and_set_status(pid_t pid, t_env **tenv, int i, int len)
 	if (i == len)
 	{
 		status = ft_itoa(WEXITSTATUS(exit_status));
-		add_to_env(&(*tenv), "?", status);
-		free(status);
-	}
+		add_to_env(&(*penv), "?", status); // program açılır açılmaz set edilmiş olmuyor
+		free(status); // '?' ' de penv içerisinde set edilse daha doğru olur 
+	}					// ama $? araması sırasında problem oluşturabilir
 }
 
-void	to_execute(t_parser *parser, char **env, t_env **tenv) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
+void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
 {
 	int		len;
 	int		i;
@@ -96,14 +113,18 @@ void	to_execute(t_parser *parser, char **env, t_env **tenv) // parser_len iş ya
 		if (pid == 0) // indicates child process
 		{
 			set_pipe(fd, i, len);
-			if (parser->is_builtin)
+			if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
 				child_builtins(parser);
 			else
 				execute_fork(parser, env);
 			exit(0);
 		}
 		else
-			execute_builtin(parser, *tenv);
+			execute_builtin(parser, &(*ee));
+
+
+
+
 		parser = parser->next;
 		i++;
 		if (i % 2 == 0 || i == len)
@@ -111,6 +132,6 @@ void	to_execute(t_parser *parser, char **env, t_env **tenv) // parser_len iş ya
 			close(fd[1]);
 			close(fd[0]);
 		}
-		wait_and_set_status(pid, &(*tenv), i, len);
+		wait_and_set_status(pid, &((*ee)->env), i, len);
 	}
 }

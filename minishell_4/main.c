@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+void	check_av(char **av)
+{
+	printf("minishell: %s: No such file or directory\n", av[1]);
+	exit(0);
+}
+
 t_lexer	*init_lexer(void)
 {
 	t_lexer	*tlexer;
@@ -18,7 +24,6 @@ t_lexer	*init_lexer(void)
 	free(prompt);
 	return (tlexer);
 }
-
 
 t_env	*set_env(char **the_env)
 {
@@ -40,13 +45,13 @@ t_env	*set_env(char **the_env)
 	return (env);
 }
 
-t_env_exp	*set_env_exp(char **the_env)
+t_ee	*set_env_exp(char **the_env)
 {
-	t_env_exp	*env_exp;
+	t_ee	*env_exp;
 
-	env_exp = malloc(sizeof(t_env_exp));
+	env_exp = malloc(sizeof(t_ee));
 	env_exp->env = set_env(the_env);
-	env_exp->exp = set_env(the_env);
+	env_exp->penv = set_env(the_env);
 	return (env_exp);
 }
 
@@ -54,8 +59,10 @@ int main(int ac, char **av, char **the_env)
 {
 	t_lexer		*lexer;
 	t_parser	*parser;
-	t_env_exp	*env_exp;
+	t_ee		*env_exp;
 
+	if (ac == 2)
+		check_av(av);
 	env_exp = set_env_exp(the_env);
 	while (1)
 	{
@@ -64,7 +71,7 @@ int main(int ac, char **av, char **the_env)
 			continue ;
 		parser = set_parser(lexer, 0, 0);
 		fill_parser(parser, env_exp->env);
-		to_execute(parser, the_env, &(env_exp->env));
+		to_execute(parser, the_env, &env_exp);
 	}
 	return (0);
 }

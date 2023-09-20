@@ -128,7 +128,7 @@ char	**the_lexer(char *str, int i, int k, int f)
 					if (is_special(str + i))
 						i--;
 					if ((str[i] == '\'' || str[i] == '"') && i--)
-						;
+						NULL;
 				}
 				i++;
 			}

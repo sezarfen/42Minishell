@@ -28,3 +28,8 @@ o yüzden child process'e geçmemiz lazım
 
 >> (append) modunda dosyayı açtığımız zaman open(file_name, O_RDWR | O_APPEND) şeklinde açabiliriz
 ardından girilen girdiden önce /n atmak gerekiyor olabilir
+
+
+---YAPILACAKLAR---
+
+asd=123 gibi gelen değişikliklerde '=' işaretini algılayarak, set işlemi yapılabilir

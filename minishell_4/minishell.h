@@ -23,11 +23,11 @@ typedef	struct s_env
 	char	**value;
 }	t_env;
 
-typedef struct s_env_exp
+typedef struct s_ee
 {
 	struct s_env *env;
-	struct s_env *exp;
-}	t_env_exp;
+	struct s_env *penv;
+}	t_ee;
 
 # include <stdio.h>
 # include <unistd.h>
@@ -59,9 +59,9 @@ int			is_append(char *str);
 void		cd(int argc, char *args);
 void		pwd(void);
 void	 	print_env(t_env *env);
-t_env		*export(char *str, t_env *env, t_env *exp);
+void		export(char *str, t_env **exp, t_env *penv);
 void		free_env(t_env *exp);
-t_env		*unset(char *element, t_env *env);
+void		unset(char *element, t_env **env);
 void		redirect_cleaner(t_parser *parser, int i, int k);
 void		input_cleaner(t_parser *parser, int i, int k);
 char		*ft_strdup_impr(const char *s1);
@@ -72,7 +72,7 @@ void		input_redirect(t_parser *parser, int i);
 void		output_redirect(t_parser *parser, int i);
 void		open_in_append(t_parser *parser, int i);
 void		clean_parser(t_parser *parser, t_env *env);
-void		to_execute(t_parser *parser, char **env, t_env **tenv);
+void		to_execute(t_parser *parser, char **env, t_ee **envexp);
 int			get_max(int a, int b);
 char		*set_propmt(char *cwd);
 void		env_builtin(t_env *env);
@@ -81,5 +81,8 @@ int			parser_len(t_parser *parser);
 void		exit_builtin(t_parser *parser);
 int			ft_isfulldigit(char *str);
 void		add_to_env(t_env **env, char *key, char *value);
+int			ft_strcmp(char *s1, char *s2);
+int			ft_iscontain(char *str, char c);
+void		print_exp(t_env *exp);
 
 #endif

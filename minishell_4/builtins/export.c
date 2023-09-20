@@ -17,30 +17,31 @@ void	free_env(t_env *exp)
 	free(exp);
 }
 
-t_env	*export(char *str, t_env *env, t_env *exp) // deneme amaçlıdır
+void	export(char *str, t_env **env, t_env *penv) // deneme amaçlıdır
 {													// sanırım export içerisine de ekliyor
 	t_env	*temp;									// bilen birine sor
 	int		len;
 	int		i;
 
-	len = split_len(env->key);
+	len = split_len((*env)->key);
 	if (str == NULL)
 	{
-		print_env(exp);
-		return (env);
+		print_exp((*env));
+		return ;
 	}
 	temp = malloc(sizeof(t_env));
 	temp->key = ft_calloc(sizeof(char *), (len + 2));
 	temp->value = ft_calloc(sizeof(char *), (len + 2));
 	i = 0;
-	while (env->key[i])
+	while ((*env)->key[i])
 	{
-		temp->key[i] = ft_strdup(env->key[i]);
-		temp->value[i] = ft_strdup(env->value[i]);
+		temp->key[i] = ft_strdup((*env)->key[i]);
+		temp->value[i] = ft_strdup((*env)->value[i]);
 		i++;
 	}
+	// bu kısımda private_env den bul ve ekle diye bir şey yapılamlı
 	temp->key[i] = ft_substr(str, 0, equal_len(str));
-	temp->value[i] = ft_substr(str, equal_len(str) + 1, ft_strlen(str));
-	free_env(env);
-	return (temp);
+	temp->value[i] = get_value_by_key(str, penv);
+	free_env((*env));
+	(*env) = temp;
 }
