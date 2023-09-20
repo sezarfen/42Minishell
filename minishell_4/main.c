@@ -25,7 +25,7 @@ t_lexer	*init_lexer(void)
 	return (tlexer);
 }
 
-t_env	*set_env(char **the_env)
+t_env	*set_env(char **the_env, int f)
 {
 	t_env	*env;
 	int		len;
@@ -33,14 +33,19 @@ t_env	*set_env(char **the_env)
 
 	len = split_len(the_env);
 	env = malloc(sizeof(t_env));
-	env->key = ft_calloc(sizeof(char *), (len + 1));
-	env->value = ft_calloc(sizeof(char *), (len + 1));
+	env->key = ft_calloc(sizeof(char *), (len + 1 + f));
+	env->value = ft_calloc(sizeof(char *), (len + 1 + f));
 	i = 0;
 	while (the_env[i])
 	{
 		env->key[i] = ft_substr(the_env[i], 0, equal_len(the_env[i]));
 		env->value[i] = ft_substr(the_env[i], equal_len(the_env[i]) + 1, ft_strlen(the_env[i]));
 		i++;
+	}
+	if (f == 1)
+	{
+		env->key[i] = ft_strdup("?");
+		env->value[i] = ft_strdup("0");
 	}
 	return (env);
 }
@@ -50,8 +55,8 @@ t_ee	*set_env_exp(char **the_env)
 	t_ee	*env_exp;
 
 	env_exp = malloc(sizeof(t_ee));
-	env_exp->env = set_env(the_env);
-	env_exp->penv = set_env(the_env);
+	env_exp->env = set_env(the_env, 1);
+	env_exp->penv = set_env(the_env, 0);
 	return (env_exp);
 }
 

@@ -83,13 +83,13 @@ void	set_pipe(int fd[], int i, int len) // need to be improved
 	close(fd[1]);
 }
 
-void	wait_and_set_status(pid_t pid, t_env **penv, int i, int len)
+void	wait_and_set_status(pid_t pid, t_env **penv,t_parser *parser)
 {
 	int		exit_status;
 	char	*status;
 
 	waitpid(pid, &exit_status, 0);
-	if (i == len)
+	if (parser->next == NULL)
 	{
 		status = ft_itoa(WEXITSTATUS(exit_status));
 		add_to_env(&(*penv), "?", status); // program açılır açılmaz set edilmiş olmuyor
@@ -97,6 +97,45 @@ void	wait_and_set_status(pid_t pid, t_env **penv, int i, int len)
 	}					// ama $? araması sırasında problem oluşturabilir
 }
 
+void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
+{
+	int		fd_in;
+	int		fd[2];
+	pid_t	pid;
+
+	fd_in = 0;
+	while (parser)
+	{
+		pipe(fd);
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2(fd_in, 0); // set input to previous one // it is 0 at the beginning
+			if (parser->next)
+				dup2(fd[1], 1); // set output if there is pipe
+			close(fd[0]);
+			// command execute part
+			if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
+				child_builtins(parser);
+			else
+				execute_fork(parser, env);
+			exit(0);
+		}
+		else
+		{
+			wait_and_set_status(pid, &((*ee)->env), parser);
+			close(fd[1]);
+			fd_in = fd[0]; //save the input for the next command
+			execute_builtin(parser, ee);
+			parser = parser->next;
+		}
+	}
+}
+
+
+/*
+
+// OLD EXECUTE // ONLY WORKS FOR 2 PIPES
 void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
 {
 	int		len;
@@ -135,3 +174,5 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapac
 		wait_and_set_status(pid, &((*ee)->env), i, len);
 	}
 }
+
+*/
