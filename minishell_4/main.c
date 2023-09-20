@@ -69,6 +69,7 @@ int main(int ac, char **av, char **the_env)
 	if (ac == 2)
 		check_av(av);
 	env_exp = set_env_exp(the_env);
+	// SIGNAL HANDLE İŞLEMLERİNİ SOR
 	while (1)
 	{
 		lexer = init_lexer();

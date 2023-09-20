@@ -17,9 +17,9 @@ void	free_env(t_env *exp)
 	free(exp);
 }
 
-void	export(char *str, t_env **env, t_env *penv) // deneme amaçlıdır
-{													// sanırım export içerisine de ekliyor
-	t_env	*temp;									// bilen birine sor
+void	export(char *str, t_env **env, t_env *penv) // asd=123 demeden asd denirse eklemesin // şu an (null) yapıyor
+{													
+	t_env	*temp;								
 	int		len;
 	int		i;
 
@@ -39,9 +39,11 @@ void	export(char *str, t_env **env, t_env *penv) // deneme amaçlıdır
 		temp->value[i] = ft_strdup((*env)->value[i]);
 		i++;
 	}
-	// bu kısımda private_env den bul ve ekle diye bir şey yapılamlı
-	temp->key[i] = ft_substr(str, 0, equal_len(str));
-	temp->value[i] = get_value_by_key(str, penv);
+	if (get_value_by_key(str, penv)) // bu kısım vesilesyile asd set edilmeden export asd dersek eklemiyor
+	{
+		temp->key[i] = ft_substr(str, 0, equal_len(str));
+		temp->value[i] = get_value_by_key(str, penv);
+	}
 	free_env((*env));
 	(*env) = temp;
 }
