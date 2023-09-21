@@ -10,14 +10,14 @@ void	exit_builtin(t_parser *parser)
 	if (len > 2)
 	{
 		printf("exit: too many arguments\n");
-		return ;
+		exit(2);
 	}
 	if (len == 2)
 	{
 		if (!ft_isfulldigit(parser->cmds[1]))
 		{
 			printf("minishell: exit: %s: numeric argument required\n", parser->cmds[1]);
-			return ;
+			exit(2);
 		}
 		exit_code = ft_atoi(parser->cmds[1]);
 	}
