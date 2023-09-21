@@ -52,6 +52,8 @@ void	child_builtins(t_parser *parser) // commands that will be executed in child
 	dup_redirections(parser);
 	if (!ft_strcmp(parser->cmds[0], "echo"))
 		echo(parser);
+	else if (!ft_strcmp(parser->cmds[0], "pwd"))
+		pwd();
 }
 
 void	execute_builtin(t_parser *parser, t_ee **ee) // main process'deki çıktılarda pipe'dan geçirilmeli
@@ -60,8 +62,6 @@ void	execute_builtin(t_parser *parser, t_ee **ee) // main process'deki çıktıl
 		add_to_penv(parser->cmds[0], &((*ee)->penv)); // add to export gibi bir şey yazabiliriz
 	else if(!ft_strcmp(parser->cmds[0], "cd")) 
 		cd(1, parser->cmds[1]);
-	else if (!ft_strcmp(parser->cmds[0], "pwd"))
-		pwd();
 	else if (!ft_strcmp(parser->cmds[0], "env"))
 		env_builtin((*ee)->env);
 	else if (!ft_strcmp(parser->cmds[0], "exit"))
