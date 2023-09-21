@@ -9,8 +9,8 @@ void	exit_builtin(t_parser *parser)
 	len = split_len(parser->cmds);
 	if (len > 2)
 	{
-		printf("exit: too many arguments\n");
-		exit(2);
+		printf("exit: too many arguments\n"); // bunda çıkmıyor , numeric argument'ta 2 ile çıkıyor
+		return ;
 	}
 	if (len == 2)
 	{
