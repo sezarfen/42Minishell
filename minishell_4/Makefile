@@ -17,7 +17,7 @@ OBJS = $(SRCS:.c=.o) $(CONTROLLERS:.c=.o) $(LEXER_PARSER:.c=.o) \
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	gcc -o minishell $(OBJS) -lreadline libft/libft.a
+	gcc $(CFLAGS) -o minishell $(OBJS) -lreadline libft/libft.a
 
 $(LIBFT):
 	make -C libft
