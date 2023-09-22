@@ -47,13 +47,15 @@ void	execute_fork(t_parser *parser, char **env)
 	exit(127);
 }
 
-void	child_builtins(t_parser *parser) // commands that will be executed in child process
+void	child_builtins(t_parser *parser, t_ee **ee) // commands that will be executed in child process
 {
 	dup_redirections(parser);
 	if (!ft_strcmp(parser->cmds[0], "echo"))
 		echo(parser);
 	else if (!ft_strcmp(parser->cmds[0], "pwd"))
 		pwd();
+	else if (!ft_strcmp(parser->cmds[0], "env"))
+		env_builtin((*ee)->env);
 }
 
 void	execute_builtin(t_parser *parser, t_ee **ee) // main process'deki çıktılarda pipe'dan geçirilmeli
@@ -62,8 +64,6 @@ void	execute_builtin(t_parser *parser, t_ee **ee) // main process'deki çıktıl
 		add_to_penv(parser->cmds[0], &((*ee)->penv)); // add to export gibi bir şey yazabiliriz
 	else if(!ft_strcmp(parser->cmds[0], "cd")) 
 		cd(1, parser->cmds[1]);
-	else if (!ft_strcmp(parser->cmds[0], "env"))
-		env_builtin((*ee)->env);
 	else if (!ft_strcmp(parser->cmds[0], "exit"))
 		exit_builtin(parser);
 	else if (!ft_strcmp(parser->cmds[0], "unset"))
@@ -83,7 +83,7 @@ void	set_pipe(int fd[], int i, int len) // need to be improved
 	close(fd[1]);
 }
 
-void	wait_and_set_status(pid_t pid, t_env **penv,t_parser *parser)
+void	wait_and_set_status(pid_t pid, t_env **penv ,t_parser *parser)
 {
 	int		exit_status;
 	char	*status;
@@ -102,6 +102,7 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapac
 	int		fd_in;
 	int		fd[2];
 	pid_t	pid;
+	t_parser	*temp;
 
 	fd_in = 0;
 	while (parser)
@@ -114,24 +115,107 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapac
 			if (parser->next)
 				dup2(fd[1], 1); // set output if there is pipe
 			close(fd[0]);
-			// command execute part
 			if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
-				child_builtins(parser);
+				child_builtins(parser, ee);
 			else
 				execute_fork(parser, env);
 			exit(0);
 		}
-		else
-		{
-			wait_and_set_status(pid, &((*ee)->env), parser);
-			close(fd[1]);
-			fd_in = fd[0]; //save the input for the next command
-			execute_builtin(parser, ee);
-			parser = parser->next;
-		}
+		if (!parser->next) // indicates last node
+			temp = parser;
+		fd_in = fd[0];
+		close(fd[1]);
+		execute_builtin(parser, ee);
+		parser = parser->next;
 	}
+	wait_and_set_status(pid, &((*ee)->env), temp);
 }
 
+
+/*
+void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
+{
+	int		i;
+	int		len;
+	pid_t	pid;
+	int		temp_fd;
+
+	len = parser_len(parser); // will indicate number of commands will be executed
+	int fd[len][2];
+	i = 0;
+	temp_fd = 0;
+	while (i < len)
+		pipe(fd[i]);
+	i = 0;
+	while (parser)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2(temp_fd, STDIN_FILENO);
+			if (parser->next)
+				dup2(fd[i][1], STDOUT_FILENO);
+			close(fd[i][0]);
+			///		EXECUTE PART	///
+			if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
+				child_builtins(parser, ee);
+			else
+				execute_fork(parser, env);
+			exit(0);
+		}
+		temp_fd = fd[i][0];
+		close(fd[i][1]);
+		execute_builtin(parser, ee);
+		parser = parser->next;
+		i++;
+	}
+	i = 0;
+	while (i < len)
+	{
+		close(fd[i][0]);
+		close(fd[i][1]);
+	}
+	wait_and_set_status(pid, &((*ee)->env), parser);
+}
+*/
+
+
+/*  LAST TO_EXECUTE COMMAND
+void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
+{
+	int		fd_in;
+	int		fd[2];
+	pid_t	pid;
+	t_parser	*temp;
+
+	fd_in = 0;
+	while (parser)
+	{
+		pipe(fd);
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2(fd_in, 0); // set input to previous one // it is 0 at the beginning
+			if (parser->next)
+				dup2(fd[1], 1); // set output if there is pipe
+			close(fd[0]);
+			if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
+				child_builtins(parser, ee);
+			else
+				execute_fork(parser, env);
+			exit(0);
+		}
+		if (!parser->next) // indicates last node
+			temp = parser;
+		fd_in = fd[0];
+		close(fd[1]);
+		execute_builtin(parser, ee);
+		parser = parser->next;
+	}
+	wait_and_set_status(pid, &((*ee)->env), temp);
+}
+
+*/
 
 /*
 

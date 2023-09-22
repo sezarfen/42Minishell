@@ -84,5 +84,8 @@ void		add_to_env(t_env **env, char *key, char *value);
 int			ft_strcmp(char *s1, char *s2);
 int			ft_iscontain(char *str, char c);
 void		print_exp(t_env *penv);
+void		free_lexer(t_lexer *lexer);
+void		free_parser(t_parser *parser);
+void		free_ee(t_ee *ee);
 
 #endif

@@ -103,7 +103,7 @@ char	**the_lexer(char *str, int i, int k, int f)
 	char	**lexer;
 	int		wc;
 
-	count_quotes(str, 0, 0, 0);
+	count_quotes(str, 0, 0, 0); // leaks olmayacağını sanıyorum
 	lexer = malloc(sizeof(char *) * (lexer_wc(str) + 1));  // lexer_wc nin değişmesi lazım
 	wc = 0;
 	while (str[i])

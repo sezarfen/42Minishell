@@ -19,9 +19,15 @@ void	redirect_cleaner(t_parser *parser, int i, int k) // probably have leaks :/
 		{
 			if (is_output_redirect(parser->cmds[i]) || is_append(parser->cmds[i])
 				|| is_input_redirect(parser->cmds[i]))
-				i += 2;
+			{
+				free(parser->cmds[i++]); // this could solve the leak problem
+				free(parser->cmds[i++]);
+			}
 			else if (is_heredoc(parser->cmds[i]))
-				i += 2;
+			{
+				free(parser->cmds[i++]);
+				free(parser->cmds[i++]);
+			}	
 			if (parser->cmds[i] && !is_output_redirect(parser->cmds[i]) 
 					&& !is_append(parser->cmds[i]) && !is_heredoc(parser->cmds[i])) // > a.txt > b.txt gibi durumlarda yardımcı oluyor (son 2 case)
 				parser->cmds[k++] = ft_strdup_impr(parser->cmds[i++]);

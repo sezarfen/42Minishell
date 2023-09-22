@@ -90,12 +90,15 @@ int main(int ac, char **av, char **the_env)
 	//signal(SIGINT, handle_signal);
 	while (1)
 	{
-		lexer = init_lexer();
+		lexer = init_lexer(); // checked for leaks
 		if (lexer->tokens[0] == NULL || lexer_control(lexer))
 			continue ;
 		parser = set_parser(lexer, 0, 0);
 		fill_parser(parser, env_exp->env);
+		free_lexer(lexer);
 		to_execute(parser, the_env, &env_exp);
+		free_parser(parser);
+		free_ee(env_exp);
 	}
 	return (0);
 }

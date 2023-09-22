@@ -10,7 +10,7 @@ LEXER_PARSER = lexer_parser/parser.c lexer_parser/lexer.c lexer_parser/parser_ut
 BUILTINS =	builtins/cd.c builtins/export.c builtins/pwd.c builtins/unset.c builtins/env_builtin.c builtins/echo.c builtins/exit.c
 CLEANERS = cleaners/cleaner.c cleaners/cleaner_parser.c cleaners/ft_strdup_impr.c
 EXECUTER = executer/to_execute.c
-UTILS = utils/utils.c utils/utils2.c utils/utils3.c
+UTILS = utils/utils.c utils/utils2.c utils/utils3.c utils/utils4.c
 OBJS = $(SRCS:.c=.o) $(CONTROLLERS:.c=.o) $(LEXER_PARSER:.c=.o) \
 	   $(BUILTINS:.c=.o) $(CLEANERS:.c=.o) $(EXECUTER:.c=.o) $(UTILS:.c=.o)
 

@@ -54,7 +54,7 @@ void	fill_parser(t_parser *parser, t_env *env) // ... < , > ...  gibi kısımlar
 		while (parser->cmds[i]) // buraya bir append ve heredoc da eklenebilir
 		{
 			if (is_output_redirect(parser->cmds[i]))
-				output_redirect(parser, i);
+				output_redirect(parser, i); // (echo)
 			else if (is_input_redirect(parser->cmds[i]))
 				input_redirect(parser, i);
 			else if (is_heredoc(parser->cmds[i]))
@@ -66,7 +66,7 @@ void	fill_parser(t_parser *parser, t_env *env) // ... < , > ...  gibi kısımlar
 		i = 0;
 		parser = parser->next;
 	}
-	redirect_cleaner(temp, 0, 0);
+	redirect_cleaner(temp, 0, 0); // (echo)
 	//input_cleaner(temp, 0, 0);
 	clean_and_set_exec(temp, env); // cleani bu kısmın içerisinde yapıyorum
 }

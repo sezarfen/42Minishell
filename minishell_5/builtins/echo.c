@@ -12,6 +12,8 @@ void	echo(t_parser *parser) // -n flagını daha eklemedik // (-n) sadece 2. par
 		i++;
 		f++;
 	}
+	if (parser->cmds[1] == NULL) // bu yada split_len(parser->cmds) == 1 çalışmıyor nedense 
+		printf("\n");
 	while (parser->cmds[i])
 	{
 		if (parser->cmds[i + 1])
