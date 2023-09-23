@@ -52,6 +52,7 @@ char	*cleaner(char *str, t_env *env) // echo $USER'$USER' gibi bir case'de hata 
 	int		len;
 	int		i;
 	int		k;
+	char	*temp; // ft_strjoin() ' len boş olarak kullanılıyordu, onlar için freelemek için kullanıldı
 
 	i = 0;
 	k = 0; // set this variable as a start point of substr
@@ -61,36 +62,56 @@ char	*cleaner(char *str, t_env *env) // echo $USER'$USER' gibi bir case'de hata 
 	{
 		if (str[i] == '"')
 		{
-			clean = ft_strjoin(clean, ft_substr(str, k, i - k), 1);
+			temp = ft_substr(str, k, i - k);
+			clean = ft_strjoin(clean, temp, 1);
+			free(temp);
 			k = ++i;
 			while (str[i] != '"' && str[i]) // "$USER"'$USER' case'i sıkıntılı
 			{								// sebebi single quote parsing olabilir, tekrar bakılabilir
 				if (str[i] == '$')
 				{
-					clean = ft_strjoin(clean, ft_substr(str, k, i - k), 1);
-					clean = ft_strjoin(clean, find_in_env(str + i, &i, env), 1);
+					temp = ft_substr(str, k, i - k);
+					clean = ft_strjoin(clean, temp, 1);
+					free(temp);
+					temp = find_in_env(str + i, &i, env);
+					clean = ft_strjoin(clean, temp, 1);
+					free(temp);
 					k = i + (str[i] == '"'); // hi norminette
 				}
 				i++;
 			}
-			clean = ft_strjoin(clean, ft_substr(str, k, i - k), 1);
+			temp = ft_substr(str, k, i - k);
+			clean = ft_strjoin(clean, temp, 1);
+			free(temp);
 			k = i + 1;
 		}
 		else if (str[i] == '\'')
 		{
-			clean = ft_strjoin(clean, ft_substr(str, k, i - k), 1);
+			temp = ft_substr(str, k, i - k);
+			clean = ft_strjoin(clean, temp, 1);
+			free(temp);
 			k = ++i;
 			while (str[i] != '\'' && str[i])
 				i++;
-			clean = ft_strjoin(clean, ft_substr(str, k, i - k), 1); // 'asd'123 "asd $USER qwe" asd
+			temp = ft_substr(str, k, i - k);
+			clean = ft_strjoin(clean, temp, 1); // 'asd'123 "asd $USER qwe" asd
+			free(temp);
 			k = i + 1;
 		}
 		else if (!str[i] && str[i - 1] != '"' && str[i - 1] != '\'') // which indicates end of the string, without " or '.
-			clean = ft_strjoin(clean, ft_substr(str, k, i - k), 1);
+		{
+			temp = ft_substr(str, k, i - k);
+			clean = ft_strjoin(clean, temp, 1);
+			free(temp);
+		}	
 		else if (str[i] == '$') // $USER
 		{
-			clean = ft_strjoin(clean, ft_substr(str, k, i - k), 1);
-			clean = ft_strjoin(clean, find_in_env(str + i, &i, env), 1);
+			temp = ft_substr(str, k, i - k);
+			clean = ft_strjoin(clean, temp, 1);
+			free(temp);
+			temp = find_in_env(str + i, &i, env);
+			clean = ft_strjoin(clean, temp, 1);
+			free(temp);
 			k = i + (str[i] == '"'); // hi norminette
 		}
 		i++;

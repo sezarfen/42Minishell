@@ -22,7 +22,7 @@ void	redirect_cleaner(t_parser *parser, int i, int k) // probably have leaks :/
 			{
 				free(parser->cmds[i++]); // this could solve the leak problem
 				free(parser->cmds[i++]);
-			}
+			} // echo hello world > a.txt // whill also free the (>) and (a.txt) 
 			else if (is_heredoc(parser->cmds[i]))
 			{
 				free(parser->cmds[i++]);

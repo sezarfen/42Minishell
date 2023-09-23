@@ -81,7 +81,7 @@ void	collect_tokens(t_parser *parser, int k, int i, t_lexer *lexer)
 	parser->cmds = ft_calloc(sizeof(char *), (len + 1));
 	while (k < i)
 		parser->cmds[a++] = ft_strdup(lexer->tokens[k++]);
-}
+} // normal dup kullanarak yapıyor, zaten ileride free_lexer kullancağız
 
 t_parser	*set_parser(t_lexer *lexer, int i, int k)
 {

@@ -71,16 +71,16 @@ t_ee	*set_env_exp(char **the_env)
 	t_ee	*env_exp;
 
 	env_exp = malloc(sizeof(t_ee));
-	env_exp->env = set_env(the_env, 1);
+	env_exp->env = set_env(the_env, 1); // ?=0 "$?" kullanmak için (f == 1)
 	env_exp->penv = set_env(the_env, 0);
 	return (env_exp);
 }
 
 int main(int ac, char **av, char **the_env)
 {
-	t_lexer		*lexer;
-	t_parser	*parser;
-	t_ee		*env_exp;
+	t_lexer		*lexer; // (echo) ("hello"world'hi') (|) ("w"c)
+	t_parser	*parser; // 2 nodes will be generated -> (.. untill pipe)[node 1] (after pipe..)[node 2]
+ 	t_ee		*env_exp; 
 
 	if (ac == 2)
 		check_av(av);
