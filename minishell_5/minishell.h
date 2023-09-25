@@ -56,7 +56,7 @@ int			is_input_redirect(char *str);
 int			is_builtin(char *str);
 int			is_heredoc(char *str);
 int			is_append(char *str);
-void		cd(int argc, char *args);
+void		cd(int argc, char *args, t_ee **ee);
 void		pwd(void);
 void	 	print_env(t_env *env);
 void		export(char **cmds, t_env **env, t_env **penv, int i);
