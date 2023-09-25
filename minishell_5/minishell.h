@@ -87,5 +87,6 @@ void		print_exp(t_env *penv);
 void		free_lexer(t_lexer *lexer);
 void		free_parser(t_parser *parser);
 void		free_ee(t_ee *ee);
+char		*ft_strjoin_df(char const *s1, char const *s2);
 
 #endif

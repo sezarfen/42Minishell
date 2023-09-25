@@ -40,5 +40,4 @@ void	free_ee(t_ee *ee) // also uses rl_clear_history
 	free_env(ee->env);
 	free_env(ee->penv);
 	free(ee);
-	rl_clear_history();
 }

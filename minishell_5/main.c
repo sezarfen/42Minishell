@@ -94,11 +94,10 @@ int main(int ac, char **av, char **the_env)
 		if (lexer->tokens[0] == NULL || lexer_control(lexer))
 			continue ;
 		parser = set_parser(lexer, 0, 0);
-		fill_parser(parser, env_exp->env);
+		fill_parser(parser, env_exp->env); // CLEANER PROBLEMLİ
 		free_lexer(lexer);
 		to_execute(parser, the_env, &env_exp);
 		free_parser(parser);
-		free_ee(env_exp);
 	}
 	return (0);
 }

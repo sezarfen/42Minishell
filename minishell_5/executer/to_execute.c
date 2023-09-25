@@ -97,6 +97,27 @@ void	wait_and_set_status(pid_t pid, t_env **penv ,t_parser *parser)
 	}					// ama $? araması sırasında problem oluşturabilir
 }
 
+int	*set_fds(t_parser *parser)
+{
+	int	len;
+	int	*fds;
+	int	fd[2];
+	int	i;
+	int	k;
+
+	len = parser_len(parser);
+	fds = malloc(sizeof(int) * ((len - 1) * 2)); // 1 pipe -> 2 parser node -> 1 pipe
+	i = 0;
+	k = 0;
+	while (i < (len - 1) * 2)
+	{
+		pipe(fd);
+		fds[i++] = fd[k++];
+		fds[i++] = fd[k++];
+		k = 0;
+	}
+	return (fds);
+}
 void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
 {
 	int		fd_in;
@@ -130,7 +151,77 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapac
 	}
 	wait_and_set_status(pid, &((*ee)->env), temp);
 }
+/*
+void	to_execute(t_parser *parser, char **env, t_ee **ee)
+{
+	int		*fds;
+	pid_t	pid;
+	int		i;
+	int		fd_temp;
 
+	fds = set_fds(parser); // will close them at the end
+	i = 1;
+	fd_temp = 0;
+	while (parser)
+	{
+		pid = fork();
+		if (pid == 0)
+		{	// stdin filenos -> 1 3 5 7.. // stdout filenos -> 0 2 4 6..
+			dup2(fd_temp, STDIN_FILENO); 
+			if (parser->next)
+				dup2(fds[i + 1], STDOUT_FILENO);
+			if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
+				child_builtins(parser, ee);
+			else
+				execute_fork(parser, env);
+			exit(0);
+		}
+		fd_temp = fds[i];
+		execute_builtin(parser, ee);
+		i += 2;
+		parser = parser->next;
+	}
+	wait_and_set_status(pid, &((*ee)->penv), parser);
+	while (i >= 0)
+		close(fds[i--]);
+}
+*/
+
+/*
+void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
+{
+	int		fd_in;
+	int		fd[2];
+	pid_t	pid;
+	t_parser	*temp;
+
+	fd_in = 0;
+	while (parser)
+	{
+		pipe(fd);
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2(fd_in, 0); // set input to previous one // it is 0 at the beginning
+			if (parser->next)
+				dup2(fd[1], 1); // set output if there is pipe
+			close(fd[0]);
+			if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
+				child_builtins(parser, ee);
+			else
+				execute_fork(parser, env);
+			exit(0);
+		}
+		if (!parser->next) // indicates last node
+			temp = parser;
+		fd_in = fd[0];
+		close(fd[1]);
+		execute_builtin(parser, ee);
+		parser = parser->next;
+	}
+	wait_and_set_status(pid, &((*ee)->env), temp);
+}
+*/
 
 /*
 void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
