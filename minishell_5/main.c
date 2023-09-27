@@ -94,24 +94,9 @@ int main(int ac, char **av, char **the_env)
 		if (lexer->tokens[0] == NULL || lexer_control(lexer))
 			continue ;
 		parser = set_parser(lexer, 0, 0);
-		fill_parser(parser, env_exp->env); // CLEANER PROBLEMLİ
-		/////////////////////////
-		int i = 0;
-		t_parser *temp = parser;
-		while (temp)
-		{
-			while (temp->cmds[i])
-				printf("(%s) ", temp->cmds[i++]);
-			printf("\n");
-			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_in:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_in);
-			i = 0;
-			temp = temp->next;
-			if (temp)
-				printf("\n---pipe---\n");
-		}
-		/////////////////////////
+		fill_parser(parser, env_exp->env);
 		free_lexer(lexer);
-		to_execute(parser, the_env, &env_exp);
+		to_execute(parser, the_env, &env_exp); // to_execute elden geçirilmeli İnşaAllah
 		free_parser(parser);
 	}
 	return (0);

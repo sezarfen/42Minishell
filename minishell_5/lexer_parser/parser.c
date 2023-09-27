@@ -1,12 +1,25 @@
 #include "../minishell.h"
 
-void	set_heredoc(t_parser *parser, int i) 
+char	*set_filename(int a)
+{
+	char	*file_name;
+
+	file_name = ft_strdup(".heredoc_");
+	file_name = ft_strjoin_df(file_name, ft_itoa(a));
+	file_name = ft_strjoin(file_name, ".txt", 1);
+	return (file_name);
+}
+
+void	set_heredoc(t_parser *parser, int i, int a) 
 {	// gizli bir dosya açıp içine yazıp onu << ile değiştirebiliriz
 	int		fd;
 	char	*str;
 	char	*eof;
+	char	*file_name;
 
-	fd = open(".heredoc.txt", O_CREAT | O_RDWR | O_APPEND , 0777); // DOSYAYI OKUYAMIYORUM?
+	file_name = set_filename(a);
+	fd = open(file_name, O_CREAT | O_RDWR | O_APPEND , 0777); // DOSYAYI OKUYAMIYORUM?
+	free(file_name);
 	eof = parser->cmds[i + 1];
 	while (1)
 	{
@@ -46,9 +59,11 @@ void	fill_parser(t_parser *parser, t_env *env) // ... < , > ...  gibi kısımlar
 {
 	t_parser	*temp; // temp ve i fonksiyona parametre olarak verilebilir
 	int			i;
+	int			a;
 
 	i = 0;
 	temp = parser;
+	a = 0;
 	while (parser)
 	{
 		while (parser->cmds[i]) // buraya bir append ve heredoc da eklenebilir
@@ -58,13 +73,14 @@ void	fill_parser(t_parser *parser, t_env *env) // ... < , > ...  gibi kısımlar
 			else if (is_input_redirect(parser->cmds[i]))
 				input_redirect(parser, i);
 			else if (is_heredoc(parser->cmds[i]))
-				set_heredoc(parser, i);
+				set_heredoc(parser, i, a);
 			else if (is_append(parser->cmds[i]))
 				open_in_append(parser, i);
 			i++;
 		}
 		i = 0;
 		parser = parser->next;
+		a++;
 	}
 	redirect_cleaner(temp, 0, 0); // (echo)
 	//input_cleaner(temp, 0, 0);
