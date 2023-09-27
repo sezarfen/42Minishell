@@ -119,14 +119,50 @@ int	*set_fds(t_parser *parser)
 	return (fds);
 }
 
+void	close_files(t_parser *parser) // for parent process
+{ // search parsers, find max fd, close it untill 2 starting from max fd
+	int	max_fd;
+
+	max_fd = 0;
+	while (parser)
+	{
+		if (parser->fd_in > max_fd)
+			max_fd = parser->fd_in;
+		if (parser->fd_out > max_fd)
+			max_fd = parser->fd_out;
+		if (parser->hd_in > max_fd)
+			max_fd = parser->hd_in;
+		parser = parser->next;
+	}
+	while (max_fd >= 3)
+		close(max_fd--);
+}
+
+void	close_file(t_parser *parser) // closing file for 1 child process
+{
+	int	max_fd;
+
+	max_fd = 0;
+	if (parser->fd_in > max_fd)
+		max_fd = parser->fd_in;
+	if (parser->fd_out > max_fd)
+		max_fd = parser->fd_out;
+	if (parser->hd_in > max_fd)
+		max_fd = parser->hd_in;
+	while (max_fd >= 3)
+		close(max_fd--);
+}
+
 void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
 {
 	int		fd_in;
 	int		fd[2];
 	pid_t	pid;
 	t_parser	*temp;
+	t_parser	*first;
 
 	fd_in = 0;
+	first = parser;
 	while (parser)
 	{
 		pipe(fd);
@@ -141,6 +177,7 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapac
 				child_builtins(parser, ee);
 			else
 				execute_fork(parser, env);
+			close_file(parser);
 			exit(0);
 		}
 		if (!parser->next) // indicates last node
@@ -151,6 +188,7 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapac
 		parser = parser->next;
 	}
 	wait_and_set_status(pid, &((*ee)->env), temp);
+	close_files(first);
 }
 
 /*

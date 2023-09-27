@@ -37,3 +37,5 @@ asd=123 gibi gelen değişikliklerde '=' işaretini algılayarak, set işlemi ya
 
 heredoc için birden fazla dosya açmamız gerektiği zaman o anki parser'ın kaçıncı parser
 olduğuna eklersek .heredoc_number.txt bir dosya açma işlemi yapabiliriz İnşaAllah
+
+dosyayı bir kez append sonra düz output redirect ' te kullanmaya bakmak lazım
