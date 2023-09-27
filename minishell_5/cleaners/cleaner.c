@@ -95,7 +95,7 @@ char	*cleaner(char *str, t_env *env) // echo $USER'$USER' gibi bir case'de hata 
 		}
 		if (!str[i])
 			clean = ft_strjoin_df(clean, ft_substr(str, k, i - k));
-		if (str[i] != '\'' && str[i] != '"')
+		if (str[i] != '\'' && str[i] != '"' && str[i] != '$')
 			i++;
 	}
 	free(str);
