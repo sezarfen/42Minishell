@@ -28,6 +28,7 @@ t_lexer	*init_lexer(void)
 	str = readline(prompt);
 	if (!str) // CTRL + D is given at beginning
 	{
+		free(prompt);
 		write(1, "\033[D\033[D", 7);
 		printf("exit\n");
 		exit(1);
@@ -85,9 +86,6 @@ int main(int ac, char **av, char **the_env)
 	if (ac == 2)
 		check_av(av);
 	env_exp = set_env_exp(the_env);
-	// SIGNAL HANDLE İŞLEMLERİNİ SOR
-	//signal(SIGQUIT, handle_signal);
-	//signal(SIGINT, handle_signal);
 	while (1)
 	{
 		lexer = init_lexer(); // checked for leaks

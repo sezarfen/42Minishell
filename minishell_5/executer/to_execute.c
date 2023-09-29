@@ -155,41 +155,49 @@ void	close_file(t_parser *parser) // closing file for 1 child process
 
 void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
 {
-	int		fd_in;
-	int		fd[2];
 	pid_t	pid;
-	t_parser	*temp;
-	t_parser	*first;
+	int		fd[2];
+	int		temp_in;
 
-	fd_in = 0;
-	first = parser;
-	while (parser)
+	temp_in = 0;
+	while (parser) // cat | cat | ls
 	{
-		pipe(fd);
 		pid = fork();
-		if (pid == 0)
+		pipe(fd);
+		if (pid == 0) // child process
 		{
-			dup2(fd_in, 0); // set input to previous one // it is 0 at the beginning
+			dup2(temp_in, STDIN_FILENO);
 			if (parser->next)
-				dup2(fd[1], 1); // set output if there is pipe
+				dup2(fd[1], STDOUT_FILENO);
+			else
+				close(fd[1]);
 			close(fd[0]);
 			if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
 				child_builtins(parser, ee);
 			else
 				execute_fork(parser, env);
-			close_file(parser);
-			exit(0);
+			if (fd[1])
+				close(fd[1]);
+			exit(0); // exit with success
 		}
-		if (!parser->next) // indicates last node
-			temp = parser;
-		fd_in = fd[0];
+		if (temp_in) // if it is not zero
+			close(temp_in);
 		close(fd[1]);
+		temp_in = fd[0];
 		execute_builtin(parser, ee);
+		if (!parser->next)
+			break;
 		parser = parser->next;
 	}
-	wait_and_set_status(pid, &((*ee)->env), temp);
-	close_files(first);
+	wait_and_set_status(pid, &((*ee)->penv), parser);
+	if (temp_in)
+		close(temp_in);
 }
+
+
+
+
+
 
 /*
 void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
