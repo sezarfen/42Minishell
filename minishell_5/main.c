@@ -12,6 +12,13 @@ void	handle_signal(int signal)
 	}
 }
 
+void	sigquit_handler(int sig)
+{
+	ft_putstr_fd("Quit: ", STDERR_FILENO);
+	ft_putnbr_fd(sig, STDERR_FILENO);
+	ft_putchar_fd('\n', STDERR_FILENO);
+}
+
 void	check_av(char **av)
 {
 	printf("minishell: %s: No such file or directory\n", av[1]);
@@ -86,6 +93,7 @@ int main(int ac, char **av, char **the_env)
 	if (ac == 2)
 		check_av(av);
 	env_exp = set_env_exp(the_env);
+	signal(SIGQUIT, sigquit_handler);
 	while (1)
 	{
 		lexer = init_lexer(); // checked for leaks

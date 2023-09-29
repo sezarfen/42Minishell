@@ -1,6 +1,18 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <sys/time.h>
+# include "libft/libft.h"
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <readline/readline.h> // don't forget to use with -lreadline // it could be library-readline
+# include <readline/history.h>
+# include <signal.h>
+
 typedef	struct s_lexer
 {
 	char	**tokens;
@@ -28,18 +40,6 @@ typedef struct s_ee
 	struct s_env *env;
 	struct s_env *penv;
 }	t_ee;
-
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <sys/time.h>
-# include "libft/libft.h"
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <readline/readline.h> // don't forget to use with -lreadline // it could be library-readline
-# include <readline/history.h>
-# include <signal.h>
 
 int			split_len(char **split);
 char		**the_lexer(char *str, int i, int k, int f);
