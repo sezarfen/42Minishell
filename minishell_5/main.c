@@ -1,9 +1,11 @@
 #include "minishell.h"
 
+int	g_exitstatus;
+
 void	default_sigint(int sig)
 {
 	(void)sig;
-	//g_exit_status = 130;
+	g_exitstatus = 130;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 1);
@@ -102,7 +104,7 @@ int main(int ac, char **av, char **the_env)
 	if (ac == 2)
 		check_av(av);
 	env_exp = set_env_exp(the_env);
-	g_exitstatus = 0;
+	g_exitstatus = 0; // we will use it later
 	signal(SIGINT, default_sigint);
 	while (1)
 	{
@@ -111,7 +113,7 @@ int main(int ac, char **av, char **the_env)
 			continue ;
 		parser = set_parser(lexer, 0, 0);
 		fill_parser(parser, env_exp->env);
-		free_lexer(lexer);
+		free_lexer(lexer); // 2 blocks leak buradaymış 
 		to_execute(parser, the_env, &env_exp); // to_execute elden geçirilmeli İnşaAllah
 		free_parser(parser);
 	}

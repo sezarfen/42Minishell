@@ -11,7 +11,7 @@ void	free_lexer(t_lexer *lexer)
 		lexer->tokens[i] = NULL;
 		i++;
 	}
-	free(lexer->tokens);
+	free(lexer->tokens); // 2 blocks leak buradaymış :) Çok Şükür Halloldu
 	free(lexer);
 }
 
@@ -26,6 +26,7 @@ void	free_parser(t_parser *parser)
 	{
 		while (parser->cmds[i])
 			free(parser->cmds[i++]);
+		free(parser->cmds);
 		i = 0;
 		parser = parser->next;
 	}

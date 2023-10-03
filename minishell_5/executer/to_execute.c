@@ -155,9 +155,9 @@ void	close_file(t_parser *parser) // closing file for 1 child process
 
 void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir
 {
-	int		fd_in;
-	int		fd[2];
-	pid_t	pid;
+	int			fd_in;
+	int			fd[2];
+	pid_t		pid;
 	t_parser	*temp;
 
 	fd_in = 0;
@@ -177,15 +177,14 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapac
 				execute_fork(parser, env);
 			exit(0);
 		}
-		if (!parser->next) // indicates last node
+		if (!parser->next) // indicates last node // or we can break; and give parser to last function
 			temp = parser;
 		fd_in = fd[0];
 		close(fd[1]);
 		execute_builtin(parser, ee);
 		parser = parser->next;
 	}
-	wait_and_set_status(pid, &((*ee)->env), temp);
-}
+	wait_and_set_status(pid, &((*ee)->env), temp);}
 
 /*
 void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapacaktır, fork ve pipe sayısını belirtir

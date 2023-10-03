@@ -26,6 +26,7 @@ typedef struct s_parser
 	int				fd_out;
 	int				is_builtin;
 	int				hd_in;
+	int				dollar_command;
 	struct s_parser *next;
 }	t_parser;
 
@@ -90,5 +91,6 @@ void		free_lexer(t_lexer *lexer);
 void		free_parser(t_parser *parser);
 void		free_ee(t_ee *ee);
 char		*ft_strjoin_df(char const *s1, char const *s2);
+void		set_exec(t_parser *parser, t_env *env);
 
 #endif

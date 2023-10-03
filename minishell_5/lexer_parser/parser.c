@@ -1,5 +1,37 @@
 #include "../minishell.h"
 
+void	expand_dollar(t_parser *parser, t_env *env)
+{
+	char		**temp_cmds;
+	char		**dollar;
+	int			i;
+	int			k;
+
+	i = 0;
+	k = 0;
+	temp_cmds = parser->cmds;
+	dollar = ft_split(parser->cmds[0], ' ');
+	parser->cmds = ft_calloc(sizeof(char *), split_len(dollar) + split_len(temp_cmds) + 1);
+	while (dollar[k])
+		parser->cmds[i++] = ft_strdup(dollar[k++]);
+	k = 1; // k starts from 1 in order to not get $command
+	while (temp_cmds[k])
+		parser->cmds[i++] = ft_strdup(temp_cmds[k++]);
+	set_exec(parser, env);
+	free_split(temp_cmds);
+	free_split(dollar);
+}
+
+void	check_dollar_command(t_parser *parser, t_env *env)
+{
+	while (parser)
+	{
+		if (parser->dollar_command)
+			expand_dollar(parser, env);
+		parser = parser->next;
+	}
+}
+
 char	*set_filename(int a)
 {
 	char	*file_name;
@@ -44,6 +76,8 @@ void	clean_parser(t_parser *parser, t_env *env) // gonna set is_builtin here oth
 	i = 0;
 	while (parser)
 	{
+		if (ft_iscontain(parser->cmds[0], '$'))
+			parser->dollar_command = 1;
 		while (parser->cmds[i])
 		{
 			parser->cmds[i] = cleaner(parser->cmds[i], env);
@@ -83,8 +117,8 @@ void	fill_parser(t_parser *parser, t_env *env) // ... < , > ...  gibi kısımlar
 		a++;
 	}
 	redirect_cleaner(temp, 0, 0); // (echo)
-	//input_cleaner(temp, 0, 0);
 	clean_and_set_exec(temp, env); // cleani bu kısmın içerisinde yapıyorum
+	check_dollar_command(temp, env);
 }
 
 void	collect_tokens(t_parser *parser, int k, int i, t_lexer *lexer)
