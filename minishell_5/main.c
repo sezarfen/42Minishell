@@ -1,23 +1,32 @@
 #include "minishell.h"
 
-void	handle_signal(int signal)
+void	default_sigint(int sig)
 {
-	if (signal == SIGQUIT) // 2 geri git 2 boşluk yaz 2 geri git
-	{
-		write(1, "\e[13", 1);
-	}
-	else if (signal == SIGINT)
-	{
-		write(1, "\e[13", 1);
-	}
+	(void)sig;
+	//g_exit_status = 130;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 1);
+	rl_redisplay();
 }
+/*
+Function: int rl_on_new_line (void)
+	Tell the update functions that
+	we have moved onto a new (empty) line,
+ 	usually after outputting a newline.
 
-void	sigquit_handler(int sig)
-{
-	ft_putstr_fd("Quit: ", STDERR_FILENO);
-	ft_putnbr_fd(sig, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
-}
+Function: void rl_redisplay (void)
+	Change what’s displayed on the
+	screen to reflect the current
+	contents of rl_line_buffer.
+
+Function: void rl_replace_line (const char *text, int clear_undo)
+	Replace the contents of rl_line_buffer with text.
+	The point and mark are preserved, if possible.
+	If clear_undo is non-zero, the undo list 
+	associated with the current line is cleared.
+
+*/
 
 void	check_av(char **av)
 {
@@ -93,7 +102,8 @@ int main(int ac, char **av, char **the_env)
 	if (ac == 2)
 		check_av(av);
 	env_exp = set_env_exp(the_env);
-	signal(SIGQUIT, sigquit_handler);
+	g_exitstatus = 0;
+	signal(SIGINT, default_sigint);
 	while (1)
 	{
 		lexer = init_lexer(); // checked for leaks

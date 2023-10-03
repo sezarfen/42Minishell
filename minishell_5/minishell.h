@@ -41,6 +41,8 @@ typedef struct s_ee
 	struct s_env *penv;
 }	t_ee;
 
+extern int g_exitstatus;
+
 int			split_len(char **split);
 char		**the_lexer(char *str, int i, int k, int f);
 int			equal_len(char *str);
