@@ -12,7 +12,7 @@ CLEANERS = cleaners/cleaner.c cleaners/cleaner_parser.c cleaners/ft_strdup_impr.
 EXECUTER = executer/to_execute.c
 UTILS = utils/utils.c utils/utils2.c utils/utils3.c utils/utils4.c
 OBJS = $(SRCS:.c=.o) $(CONTROLLERS:.c=.o) $(LEXER_PARSER:.c=.o) \
-	   $(BUILTINS:.c=.o) $(CLEANERS:.c=.o) $(EXECUTER:.c=.o) $(UTILS:.c=.o)
+		$(BUILTINS:.c=.o) $(CLEANERS:.c=.o) $(EXECUTER:.c=.o) $(UTILS:.c=.o)
 
 all: $(NAME)
 
