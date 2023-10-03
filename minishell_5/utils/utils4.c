@@ -11,6 +11,7 @@ void	free_lexer(t_lexer *lexer)
 		lexer->tokens[i] = NULL;
 		i++;
 	}
+	free(lexer->tokens);
 	free(lexer);
 }
 
