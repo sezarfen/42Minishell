@@ -56,6 +56,6 @@ void	count_quotes(char *str, int i, int j, int k)
 		else
 			i++;
 	}
-	if (j % 2 == 1 || k % 2 == 1 && printf("quotes count error\n"))
+	if ((j % 2 == 1 || k % 2 == 1) && printf("quotes count error\n"))
 		exit (1);
 }
