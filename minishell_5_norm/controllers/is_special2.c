@@ -42,9 +42,9 @@ int	is_append(char *str)
 
 int	is_redirects(char *str)
 {
-	if (is_output_redirect(parser->cmds[i])
-		|| is_append(parser->cmds[i])
-		|| is_input_redirect(parser->cmds[i]))
+	if (is_output_redirect(str)
+		|| is_append(str)
+		|| is_input_redirect(str)
 		return (1);
 	return (0);
 }
