@@ -45,15 +45,16 @@ void	add_to_env(t_env **env, char *key, char *value) // void could be change lat
 	temp = malloc(sizeof(t_env));
 	temp->key = ft_calloc(sizeof(char *), (len + 2));
 	temp->value = ft_calloc(sizeof(char *), (len + 2));
-	i = 0;
-	while ((*env)->key[i])
+	i = -1;
+	while ((*env)->key[++i])
 	{
 		temp->key[i] = ft_strdup((*env)->key[i]);
 		temp->value[i] = ft_strdup((*env)->value[i]);
-		i++;
 	}
 	temp->key[i] = ft_strdup(key); 
 	temp->value[i] = ft_strdup(value);
+	free(key);
+	free(value);
 	free_env(*env);
 	(*env) = temp;
 }
