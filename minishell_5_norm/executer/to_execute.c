@@ -23,12 +23,20 @@ void	execute_fork(t_parser *parser, char **env)
 	exit(127);
 }
 
-void	wait_and_set_status(pid_t pid, t_env **penv, t_parser *parser)
+void	wait_and_set_status(t_env **penv, t_parser *parser, int *pids)
 {
 	int		exit_status;
 	char	*status;
+	int		len;
+	int		i;
 
-	waitpid(pid, &exit_status, 0);
+	i = 0;
+	len = parser_len(parser);
+	while (i < len)
+	{
+		waitpid(pids[i], &exit_status, 0);
+		i++;
+	}
 	if (parser->next == NULL)
 	{
 		status = ft_itoa(WEXITSTATUS(exit_status));
@@ -66,12 +74,17 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee)
 	int			fd[2];
 	pid_t		pid;
 	t_parser	*temp;
+	int			*pids;
+	int			i;
 
 	fd_in = 0;
+	i = 0;
+	pids = malloc(sizeof(int) * (parser_len(parser)));
 	while (parser)
 	{
 		pipe(fd);
-		pid = fork();
+		pid = fork(); // tüm pidleri ayrı ayrı beklemek için bir şey yapalım
+		pids[i] = pid;
 		if (pid == 0)
 		{
 			dup2(fd_in, 0);
@@ -84,12 +97,17 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee)
 				execute_fork(parser, env);
 			exit(0);
 		}
+		if (i > 0)
+			close(fd_in);
 		if (!parser->next)
 			temp = parser;
 		fd_in = fd[0];
 		close(fd[1]);
 		execute_builtin(parser, ee);
 		parser = parser->next;
+		i++;
 	}
-	wait_and_set_status(pid, &((*ee)->env), temp);
+	if (fd_in)
+		close(fd_in);
+	wait_and_set_status(&((*ee)->env), temp, pids);
 }

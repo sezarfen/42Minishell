@@ -45,8 +45,9 @@ void	free_parser(t_parser *parser)
 	}
 	while (temp)
 	{
+		parser = temp->next;
 		free(temp);
-		temp = temp->next;
+		temp = parser;
 	}
 }
 

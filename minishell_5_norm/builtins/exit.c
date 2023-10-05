@@ -12,6 +12,7 @@
 
 #include "../minishell.h"
 
+// exit den bir önce t_ee freelebilir
 void	exit_builtin(t_parser *parser)
 {
 	int	exit_code;
@@ -35,5 +36,6 @@ void	exit_builtin(t_parser *parser)
 		}
 		exit_code = ft_atoi(parser->cmds[1]);
 	}
+	free_parser(parser);
 	exit(exit_code);
 }

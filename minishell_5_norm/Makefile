@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = gcc
-CFLAGS = -Werror -Wall -Wextra
+CFLAGS = -Werror -Wall -Wextra -g -fsanitize=address
 
 LIBFT = libft/libft.a
 SRCS = main.c set_executable.c
@@ -13,6 +13,9 @@ EXECUTER = executer/to_execute.c executer/execute_utils.c executer/execute_utils
 UTILS = utils/utils.c utils/utils2.c utils/utils3.c utils/utils4.c
 OBJS = $(SRCS:.c=.o) $(CONTROLLERS:.c=.o) $(LEXER_PARSER:.c=.o) \
 		$(BUILTINS:.c=.o) $(CLEANERS:.c=.o) $(EXECUTER:.c=.o) $(UTILS:.c=.o)
+
+LINKERS = -lreadline -L ./lib/lib/readline/lib
+INCLUDES = -I. -I ./lib/lib/readline/include
 
 all: $(NAME)
 

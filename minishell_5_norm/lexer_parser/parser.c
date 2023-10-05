@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdundar <fdundar@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: fdundar <fdundar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 11:47:10 by fdundar           #+#    #+#             */
-/*   Updated: 2023/10/04 22:40:59 by fdundar          ###   ########.fr       */
+/*   Updated: 2023/10/05 16:08:49 by fdundar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,11 @@ void	clean_parser(t_parser *parser, t_env *env)
 }
 
 // ... < , > ...  extract from node
-void	fill_parser(t_parser *parser, t_env *env)
+void	fill_parser(t_parser *parser, t_env *env, int i, int a)
 {
 	t_parser	*temp;
-	int			i;
-	int			a;
 
-	i = 0;
 	temp = parser;
-	a = 0;
 	while (parser)
 	{
 		while (parser->cmds[i])

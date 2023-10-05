@@ -46,6 +46,7 @@ typedef struct s_env
 {
 	char	**key;
 	char	**value;
+	char	*clean;
 }	t_env;
 
 typedef struct s_ee
@@ -83,7 +84,7 @@ void		input_cleaner(t_parser *parser, int i, int k);
 char		*ft_strdup_impr(const char *s1);
 char		*get_value_by_key(char *key, t_env *env);
 void		clean_and_set_exec(t_parser *parser, t_env *env);
-void		fill_parser(t_parser *parser, t_env *env);
+void		fill_parser(t_parser *parser, t_env *env, int i, int a);
 void		input_redirect(t_parser *parser, int i);
 void		output_redirect(t_parser *parser, int i);
 void		open_in_append(t_parser *parser, int i);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdundar <fdundar@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: fdundar <fdundar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 11:47:05 by fdundar           #+#    #+#             */
-/*   Updated: 2023/10/05 10:33:45 by fdundar          ###   ########.fr       */
+/*   Updated: 2023/10/05 16:38:44 by fdundar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ char	**the_lexer(char *str, int i, int k, int f)
 				pass_quotes(str, &i, &f);
 				if (is_special(str + i))
 				{
-					if (str[i - 1] != ' ' && str[i - 1] && !is_special(str + i - 1))
+					if (i && str[i - 1] != ' ' && str[i - 1] && !is_special(str + i - 1)) // i && yeni eklendi
 						lexer[wc++] = ft_substr(str, k, i - k);
 					k = i;
 					i += is_special(str + i);

@@ -38,7 +38,7 @@ void	default_sigint(int sig)
 	g_exitstatus = 130;
 	printf("\n");
 	rl_on_new_line();
-	rl_replace_line("", 1);
+	//rl_replace_line("", 1);
 	rl_redisplay();
 }
 
@@ -116,13 +116,16 @@ int	main(int ac, char **av, char **the_env)
 	while (1)
 	{
 		lexer = init_lexer();
-		if (lexer->tokens[0] == NULL || lexer_control(lexer, 0))
+		if (lexer->tokens[0] == NULL || lexer_control(lexer, -1))
+		{
 			continue ;
+		}
 		parser = set_parser(lexer, 0, 0);
-		fill_parser(parser, env_exp->env);
+		fill_parser(parser, env_exp->env, 0, 0);
 		free_lexer(lexer);
 		to_execute(parser, the_env, &env_exp);
 		free_parser(parser);
+		//system("leaks minishell");
 	}
 	return (0);
 }
