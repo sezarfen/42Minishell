@@ -43,7 +43,8 @@ void	expand_dollar(t_parser *parser, t_env *env)
 	k = 0;
 	temp_cmds = parser->cmds;
 	dollar = ft_split(parser->cmds[0], ' ');
-	parser->cmds = ft_calloc(sizeof(char *), split_len(dollar) + split_len(temp_cmds) + 1);
+	parser->cmds = ft_calloc(sizeof(char *), split_len(dollar)
+			+ split_len(temp_cmds) + 1);
 	while (dollar[k])
 		parser->cmds[i++] = ft_strdup(dollar[k++]);
 	k = 1;
@@ -62,7 +63,7 @@ void	set_heredoc(t_parser *parser, int i, int a)
 	char	*file_name;
 
 	file_name = set_filename(a);
-	fd = open(file_name, O_CREAT | O_RDWR | O_APPEND , 0777);
+	fd = open(file_name, O_CREAT | O_RDWR | O_APPEND, 0777);
 	free(file_name);
 	eof = parser->cmds[i + 1];
 	while (1)

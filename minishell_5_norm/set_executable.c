@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-void	set_exec(t_parser *parser, t_env *env) // munmap_chunk(): invalid pointer // hatası alınabiliyor
-{ // env ' i kendimizden bakmamız lazım ki, PATH unset olunca komutlar bulunamasın
+void	set_exec(t_parser *parser, t_env *env)
+{
 	char	*path;
 	char	**paths;
 	char	*command;

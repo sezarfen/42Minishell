@@ -62,7 +62,7 @@ int			equal_len(char *str);
 void		free_split(char **split);
 void		print_split(char **split);
 t_parser	*set_parser(t_lexer *lexer, int i, int k);
-char		*cleaner(char *str, t_env *env);
+char		*cleaner(char *str, t_env *env, int i, int k);
 int			lexer_control(t_lexer *lexer, int i);
 int			is_special(char *str);
 int			is_pipe(char *str);

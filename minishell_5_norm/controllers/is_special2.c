@@ -44,7 +44,7 @@ int	is_redirects(char *str)
 {
 	if (is_output_redirect(str)
 		|| is_append(str)
-		|| is_input_redirect(str)
+		|| is_input_redirect(str))
 		return (1);
 	return (0);
 }

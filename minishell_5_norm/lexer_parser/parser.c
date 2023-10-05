@@ -6,7 +6,7 @@
 /*   By: fdundar <fdundar@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 11:47:10 by fdundar           #+#    #+#             */
-/*   Updated: 2023/10/04 14:11:56 by fdundar          ###   ########.fr       */
+/*   Updated: 2023/10/04 22:40:59 by fdundar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	clean_parser(t_parser *parser, t_env *env)
 			parser->dollar_command = 1;
 		while (parser->cmds[i])
 		{
-			parser->cmds[i] = cleaner(parser->cmds[i], env);
+			parser->cmds[i] = cleaner(parser->cmds[i], env, 0, 0);
 			i++;
 		}
 		parser->is_builtin = is_builtin(parser->cmds[0]);

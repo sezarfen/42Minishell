@@ -31,4 +31,6 @@ fclean: clean
 	rm -rf minishell
 	make -C libft fclean
 
-.PHONY: all
+re: fclean all
+
+.PHONY: all clean fclean all
