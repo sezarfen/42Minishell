@@ -37,6 +37,7 @@ void	wait_and_set_status(t_env **penv, t_parser *parser, int *pids)
 		waitpid(pids[i], &exit_status, 0);
 		i++;
 	}
+	free(pids);
 	if (parser->next == NULL)
 	{
 		status = ft_itoa(WEXITSTATUS(exit_status));
