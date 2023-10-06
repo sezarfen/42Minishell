@@ -19,13 +19,13 @@ void	echo(t_parser *parser)
 
 	i = 1;
 	f = 0;
+	if (split_len(parser->cmds) == 1)
+		printf("\n");
 	if (!ft_strcmp(parser->cmds[i], "-n"))
 	{
 		i++;
 		f++;
 	}
-	if (parser->cmds[1] == NULL)
-		printf("\n");
 	while (parser->cmds[i])
 	{
 		if (parser->cmds[i + 1])

@@ -283,3 +283,12 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapac
 
 */
 ///////////////////////////////////////////////////////////////
+
+
+
+
+// cat | cat | ls
+case'inde iki kere input aldıktan sonra kapanmasının sebebi
+pipeların bir uçları kapandıkan sonra write() ile diğer uca yazmaya çalışınca
+write -> SIGPIPE hatası veriyor ve ardından program kapanıyor o yüzden daha fazla
+input almayı beklemiyor, her bir cat için 1 input aldıktan sonra program terminate oluyor

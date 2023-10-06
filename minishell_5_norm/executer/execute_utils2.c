@@ -28,7 +28,7 @@ void	execute_builtin(t_parser *parser, t_ee **ee)
 	if (ft_iscontain(parser->cmds[0], '='))
 		add_to_penv(parser->cmds[0], &((*ee)->penv));
 	else if (!ft_strcmp(parser->cmds[0], "cd"))
-		cd(1, parser->cmds[1], ee);
+		cd(split_len(parser->cmds) - 1, parser->cmds[1], ee);
 	else if (!ft_strcmp(parser->cmds[0], "exit"))
 		exit_builtin(parser);
 	else if (!ft_strcmp(parser->cmds[0], "unset"))

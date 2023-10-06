@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = gcc
-CFLAGS = -Werror -Wall -Wextra -g -fsanitize=address
+CFLAGS = -Werror -Wall -Wextra #-g -fsanitize=address
 
 LIBFT = libft/libft.a
 SRCS = main.c set_executable.c

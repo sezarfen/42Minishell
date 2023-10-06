@@ -34,11 +34,10 @@ char	*set_propmt(void)
 	char	cwd[256];
 
 	getcwd(cwd, 256);
-	prompt = ft_strdup("\033[34m┌─(\033[0m\033[31m");
-	prompt = ft_strjoin(prompt, cwd, 1);
-	prompt = ft_strjoin(prompt, "\033[0m\033[34m)"
-			"───(\033[0m\033[31mhcivici & fdundar\033[0m\033[34m)\n"
-			"└(\033[0m\033[1m\033[33mminishell\033[0m\033[34m)$>\033[0m ", 1);
+	prompt = ft_strdup("");
+	prompt = ft_strjoin(prompt,
+			"(\033[31mhcivici & fdundar\033[0m)"
+			"──(\033[0m\033[1m\033[33mminishell\033[0m)$> ", 1);
 	return (prompt);
 }
 
