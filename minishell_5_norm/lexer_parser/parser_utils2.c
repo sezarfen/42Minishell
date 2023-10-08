@@ -57,13 +57,13 @@ void	expand_dollar(t_parser *parser, t_env *env)
 
 void	set_heredoc(t_parser *parser, int i, int a)
 {
-	int		fd;
 	char	*str;
 	char	*eof;
 	char	*file_name;
 
 	file_name = set_filename(a);
-	fd = open(file_name, O_CREAT | O_RDWR | O_APPEND, 0777);
+	parser->hd_in = open(file_name, O_CREAT | O_RDWR | O_APPEND |
+			O_TRUNC, 0777);
 	free(file_name);
 	eof = parser->cmds[i + 1];
 	while (1)
@@ -72,12 +72,39 @@ void	set_heredoc(t_parser *parser, int i, int a)
 		if (!ft_strncmp(str, eof, ft_strlen(str)))
 		{
 			free(str);
-			close(fd);
 			break ;
 		}
-		ft_putstr_fd(str, fd);
-		ft_putchar_fd('\n', fd);
+		ft_putstr_fd(str, parser->hd_in);
+		ft_putchar_fd('\n', parser->hd_in);
 		free(str);
 	}
-	parser->hd_in = fd;
+	parser->fds[parser->fd_num++] = parser->hd_in;
+}
+
+int	lexer_wc(char *str)
+{
+	int	i;
+	int	f;
+	int	wc;
+
+	i = 0;
+	f = 0;
+	wc = 0;
+	while (str[i])
+	{
+		while (str[i] == ' ')
+			i++;
+		if (str[i] != ' ' && str[i])
+		{
+			wc++;
+			while (str[i] != ' ' && str[i])
+			{
+				lexer_wc_inner(str, &i, &f);
+				if (is_special(str + i) && wc++ && wc++)
+					i += is_special(str + i);
+				i++;
+			}
+		}
+	}
+	return (wc);
 }

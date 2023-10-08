@@ -23,13 +23,15 @@ void	execute_fork(t_parser *parser, char **env)
 	exit(127);
 }
 
-void	wait_and_set_status(t_env **penv, t_parser *parser, int *pids)
+void	wait_status(t_env **penv, t_parser *parser, int *pids, int fd_in)
 {
 	int		exit_status;
 	char	*status;
 	int		len;
 	int		i;
 
+	if (fd_in)
+		close(fd_in);
 	i = 0;
 	len = parser_len(parser);
 	while (i < len)
@@ -37,8 +39,8 @@ void	wait_and_set_status(t_env **penv, t_parser *parser, int *pids)
 		waitpid(pids[i], &exit_status, 0);
 		i++;
 	}
-	free(pids);
 	close_files(parser);
+	free(pids);
 	status = ft_itoa(WEXITSTATUS(exit_status));
 	add_to_env(&(*penv), "?", status);
 	free(status);
@@ -66,36 +68,38 @@ int	*set_fds(t_parser *parser)
 	return (fds);
 }
 
+void	child_process(int fd[3], t_parser *parser, char **env, t_ee **ee)
+{
+	dup2(fd[2], 0);
+	if (parser->next)
+		dup2(fd[1], 1);
+	close(fd[0]);
+	if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
+		child_builtins(parser, ee);
+	else
+		execute_fork(parser, env);
+	exit(0);
+}
+
 // waiting for change
-void	to_execute(t_parser *parser, char **env, t_ee **ee)
+void	to_execute(t_parser *parser, char **env, t_ee **ee, int i)
 {
 	int			fd_in;
-	int			fd[2];
+	int			fd[3];
 	pid_t		pid;
 	t_parser	*temp;
 	int			*pids;
-	int			i;
 
 	fd_in = 0;
-	i = 0;
+	fd[2] = fd_in;
 	pids = malloc(sizeof(int) * (parser_len(parser)));
 	while (parser)
 	{
 		pipe(fd);
 		pid = fork();
-		pids[i] = pid;
+		pids[++i] = pid;
 		if (pid == 0)
-		{
-			dup2(fd_in, 0);
-			if (parser->next)
-				dup2(fd[1], 1);
-			close(fd[0]);
-			if (parser->is_builtin || ft_iscontain(parser->cmds[0], '='))
-				child_builtins(parser, ee);
-			else
-				execute_fork(parser, env);
-			exit(0);
-		}
+			child_process(fd, parser, env, ee);
 		if (i > 0)
 			close(fd_in);
 		if (!parser->next)
@@ -104,9 +108,6 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee)
 		close(fd[1]);
 		execute_builtin(parser, ee);
 		parser = parser->next;
-		i++;
 	}
-	if (fd_in)
-		close(fd_in);
-	wait_and_set_status(&((*ee)->env), temp, pids);
+	wait_status(&((*ee)->env), temp, pids, fd_in);
 }

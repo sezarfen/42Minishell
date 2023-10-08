@@ -49,7 +49,7 @@ void	dup_redirections(t_parser *parser)
 }
 
 // for parent process
-void	close_files(t_parser *parser)// don't forget to close hd_in
+void	close_files(t_parser *parser)
 {
 	while (parser)
 	{
@@ -62,7 +62,7 @@ void	close_files(t_parser *parser)// don't forget to close hd_in
 		if (parser->hd_in)
 			close(parser->hd_in);
 		parser = parser->next;
-	}	
+	}
 }
 
 // closing file for 1 child process

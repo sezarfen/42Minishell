@@ -1,6 +1,6 @@
 NAME = minishell
 
-CC = gcc
+CC = @gcc
 CFLAGS = -Werror -Wall -Wextra #-g -fsanitize=address
 
 LIBFT = libft/libft.a
@@ -20,19 +20,23 @@ INCLUDES = -I. -I ./lib/lib/readline/include
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	gcc $(CFLAGS) -o minishell $(OBJS) -lreadline libft/libft.a
+	@echo	Compilation on progress...
+	@gcc $(CFLAGS) -o minishell $(OBJS) -lreadline libft/libft.a
+	@echo	Compilation DONE!...
 
 $(LIBFT):
 	make -C libft
 
 clean:
-	rm -rf *.o
-	rm -rf */*.o
-	make -C libft clean
+	@rm -rf *.o
+	@rm -rf */*.o
+	@make -C libft clean
+	@echo All files are cleaned!
 
 fclean: clean
-	rm -rf minishell
-	make -C libft fclean
+	@rm -rf minishell
+	@make -C libft fclean
+	@echo All files are fully-cleaned!
 
 re: fclean all
 

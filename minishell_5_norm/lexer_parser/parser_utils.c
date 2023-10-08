@@ -6,7 +6,7 @@
 /*   By: fdundar <fdundar@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 11:47:08 by fdundar           #+#    #+#             */
-/*   Updated: 2023/10/05 10:35:20 by fdundar          ###   ########.fr       */
+/*   Updated: 2023/10/08 19:14:24 by fdundar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	output_redirect(t_parser *parser, int i)
 {
-	parser->fd_out = open(parser->cmds[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0777);
+	parser->fd_out = open(parser->cmds[i + 1],
+			O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (parser->fd_out == -1)
 		printf("cannot open that file...");
 	parser->fds[parser->fd_num++] = parser->fd_out;

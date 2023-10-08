@@ -284,6 +284,80 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee) // parser_len iş yapac
 */
 ///////////////////////////////////////////////////////////////
 
+/*
+		LEXER İÇERİKLERİNİ CLEANER ' A SOKMA [DAHA SONRA YAPILMASI DAHA DOĞRU OLABİLİR]
+		while (lexer->tokens[i])
+		{
+			lexer->tokens[i] = cleaner(lexer->tokens[i], env);
+			i++;
+		}
+
+		// PARSER İÇERİKLERİNİ EKRANA YAZDIRMA
+		i = 0;
+		t_parser *temp = parser;
+		while (temp)
+		{
+			while (temp->cmds[i])
+				printf("(%s) ", temp->cmds[i++]);
+			i = 0;
+			temp = temp->next;
+			if (temp)
+				printf("\n---pipe---\n");
+		}
+
+		// PRINT THE CLEANED PARSER
+		printf("\n=========CLEANED PARSER=========\n");
+		t_parser	*temp;
+		int			i;
+		temp = parser;
+		i = 0;
+		while (temp)
+		{
+			while (temp->cmds[i])
+			{
+				temp->cmds[i] = cleaner(temp->cmds[i], env_list);
+				printf("%s ", temp->cmds[i++]);
+			}
+			i = 0;
+			printf("\n");
+			temp = temp->next;
+			if (temp)
+				printf("\n|==(pipe found)==|\n");
+		}
+
+		// DIFFERENT PARSER PRINT (WITH ATTRIBUTES)
+
+		int i = 0;
+		t_parser *temp = parser;
+		while (temp)
+		{
+			while (temp->cmds[i])
+				printf("(%s) ", temp->cmds[i++]);
+			printf("\n");
+			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_in:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_in);
+			i = 0;
+			temp = temp->next;
+			if (temp)
+				printf("\n---pipe---\n");
+		}
+*/
+/////////////////////////////////////////
+	/*
+		int i = 0;
+		t_parser *temp = parser;
+		while (temp)
+		{
+			while (temp->cmds[i])
+				printf("(%s) ", temp->cmds[i++]);
+			printf("\n");
+			printf("fd_in:%d\nfd_out:%d\nis_builtin:%d\nhd_in:%d\n", temp->fd_in , temp->fd_out, temp->is_builtin, temp->hd_in);
+			i = 0;
+			temp = temp->next;
+			if (temp)
+				printf("\n---pipe---\n");
+		}
+	*/
+//////////////////////////////////////////
 
 
 
@@ -292,3 +366,5 @@ case'inde iki kere input aldıktan sonra kapanmasının sebebi
 pipeların bir uçları kapandıkan sonra write() ile diğer uca yazmaya çalışınca
 write -> SIGPIPE hatası veriyor ve ardından program kapanıyor o yüzden daha fazla
 input almayı beklemiyor, her bir cat için 1 input aldıktan sonra program terminate oluyor
+
+EXPORT VE ENV ' nin ekrana yazdırma fonksiyonlarını child process ' de yapmak lazım

@@ -113,9 +113,8 @@ int	main(int ac, char **av, char **the_env)
 		parser = set_parser(lexer, 0, 0);
 		fill_parser(parser, env_exp->env, 0, 0);
 		free_lexer(lexer);
-		to_execute(parser, the_env, &env_exp);
+		to_execute(parser, the_env, &env_exp, -1);
 		free_parser(parser);
-		//system("leaks minishell");
 	}
 	return (0);
 }

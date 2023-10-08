@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdundar <fdundar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fdundar <fdundar@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 11:47:05 by fdundar           #+#    #+#             */
-/*   Updated: 2023/10/05 16:38:44 by fdundar          ###   ########.fr       */
+/*   Updated: 2023/10/08 18:24:43 by fdundar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,34 +30,6 @@ void	lexer_wc_inner(char *str, int *i, int *f)
 		if (str[(*i)] == '\'')
 			(*f)--;
 	}
-}
-
-int	lexer_wc(char *str)
-{
-	int	i;
-	int	f;
-	int	wc;
-
-	i = 0;
-	f = 0;
-	wc = 0;
-	while (str[i])
-	{
-		while (str[i] == ' ')
-			i++;
-		if (str[i] != ' ' && str[i])
-		{
-			wc++;
-			while (str[i] != ' ' && str[i])
-			{
-				lexer_wc_inner(str, &i, &f);
-				if (is_special(str + i) && wc++ && wc++)
-					i += is_special(str + i);
-				i++;
-			}
-		}
-	}
-	return (wc);
 }
 
 void	pass_quotes(char *str, int *i, int *f)
@@ -91,6 +63,7 @@ void	lexer_nest_one(char *str, int *i, int *k)
 		(*i)--;
 }
 
+// num[0] represents start flag, num[1] is current index
 char	**the_lexer(char *str, int i, int k, int f)
 {
 	char	**lexer;
