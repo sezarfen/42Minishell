@@ -35,8 +35,7 @@ char	*set_propmt(void)
 
 	getcwd(cwd, 256);
 	prompt = ft_strdup("");
-	prompt = ft_strjoin(prompt,
-			"(\033[31mhcivici & fdundar\033[0m)"
+	prompt = ft_strjoin(prompt, "(\033[31mhcivici & fdundar\033[0m)"
 			"──(\033[0m\033[1m\033[33mminishell\033[0m)$> ", 1);
 	return (prompt);
 }

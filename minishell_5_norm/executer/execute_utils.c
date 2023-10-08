@@ -49,23 +49,20 @@ void	dup_redirections(t_parser *parser)
 }
 
 // for parent process
-void	close_files(t_parser *parser)
+void	close_files(t_parser *parser)// don't forget to close hd_in
 {
-	int	max_fd;
-
-	max_fd = 0;
 	while (parser)
 	{
-		if (parser->fd_in > max_fd)
-			max_fd = parser->fd_in;
-		if (parser->fd_out > max_fd)
-			max_fd = parser->fd_out;
-		if (parser->hd_in > max_fd)
-			max_fd = parser->hd_in;
+		while (parser->fd_num >= 0)
+		{
+			if (parser->fds[parser->fd_num] > 2)
+				close(parser->fds[parser->fd_num]);
+			parser->fd_num--;
+		}
+		if (parser->hd_in)
+			close(parser->hd_in);
 		parser = parser->next;
-	}
-	while (max_fd >= 3)
-		close(max_fd--);
+	}	
 }
 
 // closing file for 1 child process

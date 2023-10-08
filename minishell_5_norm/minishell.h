@@ -39,6 +39,8 @@ typedef struct s_parser
 	int				is_builtin;
 	int				hd_in;
 	int				dollar_command;
+	int				fds[100];
+	int				fd_num;
 	struct s_parser	*next;
 }	t_parser;
 
@@ -120,5 +122,7 @@ char		*set_filename(int a);
 void		expand_dollar(t_parser *parser, t_env *env);
 void		set_heredoc(t_parser *parser, int i, int a);
 void		check_av(char **av);
+void		default_sigint(int sig);
+void		default_sigquit(int sig);
 
 #endif

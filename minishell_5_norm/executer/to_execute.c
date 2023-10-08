@@ -38,12 +38,10 @@ void	wait_and_set_status(t_env **penv, t_parser *parser, int *pids)
 		i++;
 	}
 	free(pids);
-	if (parser->next == NULL)
-	{
-		status = ft_itoa(WEXITSTATUS(exit_status));
-		add_to_env(&(*penv), "?", status);
-		free(status);
-	}
+	close_files(parser);
+	status = ft_itoa(WEXITSTATUS(exit_status));
+	add_to_env(&(*penv), "?", status);
+	free(status);
 }
 
 int	*set_fds(t_parser *parser)
@@ -84,7 +82,7 @@ void	to_execute(t_parser *parser, char **env, t_ee **ee)
 	while (parser)
 	{
 		pipe(fd);
-		pid = fork(); // tüm pidleri ayrı ayrı beklemek için bir şey yapalım
+		pid = fork();
 		pids[i] = pid;
 		if (pid == 0)
 		{

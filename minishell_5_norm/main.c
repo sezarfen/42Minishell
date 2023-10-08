@@ -32,15 +32,6 @@ Function: void rl_replace_line (const char *text, int clear_undo)
 	associated with the current line is cleared.
 
 */
-void	default_sigint(int sig)
-{
-	(void)sig;
-	g_exitstatus = 130;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 1);
-	rl_redisplay();
-}
 
 t_lexer	*init_lexer(void)
 {
@@ -113,6 +104,7 @@ int	main(int ac, char **av, char **the_env)
 	env_exp = set_env_exp(the_env);
 	g_exitstatus = 0;
 	signal(SIGINT, default_sigint);
+	signal(SIGQUIT, default_sigquit);
 	while (1)
 	{
 		lexer = init_lexer();
