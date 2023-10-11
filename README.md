@@ -25,7 +25,6 @@ cd minishell_5_last_check
 make && ./minishell
 ```
 ## Some images from project
-![image](https://github.com/sezarfen/42Minishell/assets/110563468/d53f3fbb-4c09-48f4-b80f-7c65c45d3a27)
-![image](https://github.com/sezarfen/42Minishell/assets/110563468/0329210b-e1b9-425b-ab9c-828c52b8ccc1)
+![image](https://github.com/sezarfen/42Minishell/assets/110563468/4ae796d8-d010-46ff-9ae4-ead0da65ef8f)
 ![image](https://github.com/sezarfen/42Minishell/assets/110563468/f077b445-7326-43e1-b677-fc64158761ac)
 
