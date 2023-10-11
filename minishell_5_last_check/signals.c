@@ -14,6 +14,14 @@
 
 void	default_sigint(int sig)
 {
+	if (g_exitstatus == 1453)
+	{
+		g_exitstatus = 2023;
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		return ;
+	}
 	(void)sig;
 	g_exitstatus = 130;
 	printf("\n");

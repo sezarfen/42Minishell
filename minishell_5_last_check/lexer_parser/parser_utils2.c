@@ -62,6 +62,9 @@ void	set_heredoc(t_parser *parser, int i, int a)
 	char	*eof;
 	char	*file_name;
 
+	g_exitstatus = 1453;
+	if (parser->hd_name)
+		free(parser->hd_name);
 	file_name = set_filename(a);
 	parser->hd_in = open(file_name, O_CREAT | O_RDWR | O_APPEND
 			| O_TRUNC, 0777);
@@ -69,6 +72,8 @@ void	set_heredoc(t_parser *parser, int i, int a)
 	while (1)
 	{
 		str = readline(" >");
+		if (g_exitstatus == 2023)
+			break ;
 		if (!ft_strncmp(str, eof, ft_strlen(str)))
 		{
 			free(str);
@@ -79,6 +84,12 @@ void	set_heredoc(t_parser *parser, int i, int a)
 		ft_putstr_fd(str, parser->hd_in);
 		ft_putchar_fd('\n', parser->hd_in);
 		free(str);
+	}
+	if (g_exitstatus == 2023)
+	{
+		free(str);
+		free(file_name);
+		parser->hd_name = ft_strdup("/dev/null");
 	}
 }
 
